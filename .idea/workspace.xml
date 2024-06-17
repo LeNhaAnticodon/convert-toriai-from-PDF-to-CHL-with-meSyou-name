@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/AboutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/MainApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/convert/ReadPDFToExcel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/dao/SetupData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/model/CsvFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convert_toriai_from_pdf_to_excel/model/Setup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/languagesMap.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+    <option name="SWAP_SIDES_IN_COMPARE_BRANCHES" value="true" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2hg3BD1eAG6MB4nGsm5UipHojtX" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_directory_selection": "C:/Users/HuanTech PC/IdeaProjects/convert toriai from PDF to EXCEL/src/main/java/com/example/convert_toriai_from_pdf_to_excel",
+    "last_opened_file_path": "C:/Users/HuanTech PC/IdeaProjects/convert toriai from PDF to EXCEL/src/main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\HuanTech PC\IdeaProjects\convert toriai from PDF to EXCEL\src\main" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MainApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.convert_toriai_from_pdf_to_excel.MainApplication" />
+      <module name="convert_toriai_from_PDF_to_EXCEL" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.convert_toriai_from_pdf_to_excel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="" />
+      <created>1718001758809</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718001758809</updated>
+      <workItem from="1718001760570" duration="1294000" />
+      <workItem from="1718013489973" duration="4543000" />
+      <workItem from="1718071371228" duration="6947000" />
+      <workItem from="1718081589116" duration="886000" />
+      <workItem from="1718086353005" duration="9926000" />
+      <workItem from="1718121114894" duration="12790000" />
+      <workItem from="1718184235127" duration="4034000" />
+      <workItem from="1718190823980" duration="9903000" />
+      <workItem from="1718241667029" duration="5788000" />
+      <workItem from="1718258986579" duration="11964000" />
+      <workItem from="1718273822925" duration="289000" />
+      <workItem from="1718275314737" duration="203000" />
+      <workItem from="1718275756600" duration="46000" />
+      <workItem from="1718275852798" duration="11759000" />
+      <workItem from="1718328314795" duration="2382000" />
+      <workItem from="1718332762841" duration="6134000" />
+      <workItem from="1718345918832" duration="14319000" />
+      <workItem from="1718362031950" duration="3267000" />
+      <workItem from="1718365339871" duration="415000" />
+      <workItem from="1718365784527" duration="3261000" />
+      <workItem from="1718371170108" duration="645000" />
+      <workItem from="1718417987080" duration="1330000" />
+      <workItem from="1718421598289" duration="6246000" />
+      <workItem from="1718431801780" duration="2634000" />
+      <workItem from="1718435953711" duration="4036000" />
+      <workItem from="1718440817322" duration="1199000" />
+      <workItem from="1718448703697" duration="11091000" />
+      <workItem from="1718460004606" duration="518000" />
+      <workItem from="1718585713412" duration="1139000" />
+      <workItem from="1718587932214" duration="65000" />
+      <workItem from="1718609469394" duration="2505000" />
+      <workItem from="1718613566082" duration="5154000" />
+      <workItem from="1718620516456" duration="752000" />
+      <workItem from="1718621281187" duration="10000" />
+      <workItem from="1718621419432" duration="21000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>394</line>
+          <option name="timeStamp" value="76" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>395</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>396</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>397</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>392</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>390</line>
+          <option name="timeStamp" value="84" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>387</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>386</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>385</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <line>384</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
