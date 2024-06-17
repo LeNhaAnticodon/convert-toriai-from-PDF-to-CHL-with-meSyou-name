@@ -98,10 +98,10 @@ public class ReadPDFToExcel {
             // còn value của kaKouPairs cũng là map chứa các cặp key là chiều dài sản phẩm, value là số lượng sản phẩm
             Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
-            //                writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
-            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
+//            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
+//            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin vào file định dạng sysc2 là file của chl
-//            writeDataToChl(kaKouPairs, i, csvFileNames);
+            writeDataToChl(kaKouPairs, i, csvFileNames);
         }
 
     }
@@ -234,9 +234,13 @@ public class ReadPDFToExcel {
                     // tạo biến chứa tên
                     String name = "";
                     // vì vùng chứa chiều dài có thể có dấu cách nên phải lấy từ phần tử đầu tiên đến phần tử trước phần tử cuối cùng
+                    // và cuối tên sẽ không thêm dấu cách
                     for (int j = 0; j < meiSyouLengths.length - 1; j++) {
-                        name = name.concat(meiSyouLengths[j] + " ");
+                        String namej = meiSyouLengths[j];
+                        name = name.concat(namej + " ");
                     }
+                    // xóa dấu cách ở 2 đầu
+                    name = name.trim();
 
                     // lấy vùng chứa chiều dài là vùng cuối cùng trong mảng tên
                     String length = meiSyouLengths[meiSyouLengths.length - 1];
@@ -294,7 +298,7 @@ public class ReadPDFToExcel {
         return kaKouPairs;
     }
 
-    private static void writeDataToExcel(Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
+    private static void writeDataToExcel(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Sheet1");
 
@@ -315,9 +319,9 @@ public class ReadPDFToExcel {
         // Lấy thời gian sau khi tăng
         Date newDate = calendar.getTime();
 
-        String newTime = sdf.format(newDate);
+        String newTime = sdf.format(currentDate);
 
-        cellA1.setCellValue(newTime);
+        cellA1.setCellValue(newTime + "+" + timePlus);
 
         // Ghi size1, size2, size3, 1 vào ô A2, B2, C2, D2
         Row row2 = sheet.createRow(1);
@@ -336,16 +340,16 @@ public class ReadPDFToExcel {
         int rowIndex = 3;
 
         // Ghi dữ liệu từ KA_KOU_PAIRS vào các ô
-        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> entry : kaKouPairs.entrySet()) {
+        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> entry : kaKouPairs.entrySet()) {
             if (rowIndex >= 102) break;
 
             Map<StringBuilder, Integer> kouZaiChouPairs = entry.getKey();
-            Map<StringBuilder, Integer> meiSyouPairs = entry.getValue();
+            Map<StringBuilder[], Integer> meiSyouPairs = entry.getValue();
 
             String keyTemp = "";
             int valueTemp = 0;
 
-            // Ghi dữ liệu từ mapkey vào ô C4
+            // Ghi dữ liệu từ mapkey vào ô D4
             for (Map.Entry<StringBuilder, Integer> kouZaiEntry : kouZaiChouPairs.entrySet()) {
 
                 keyTemp = String.valueOf(kouZaiEntry.getKey());
@@ -355,18 +359,21 @@ public class ReadPDFToExcel {
             // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
             for (int i = 0; i < valueTemp; i++) {
                 int j = 0;
-                for (Map.Entry<StringBuilder, Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
+                for (Map.Entry<StringBuilder[], Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
                     if (rowIndex >= 102) break;
 
                     Row row = sheet.createRow(rowIndex++);
-                    row.createCell(0).setCellValue(String.valueOf(meiSyouEntry.getKey()));
+                    row.createCell(0).setCellValue(String.valueOf(meiSyouEntry.getKey()[1]));
                     row.createCell(1).setCellValue(meiSyouEntry.getValue());
+                    row.createCell(2).setCellValue(String.valueOf(meiSyouEntry.getKey()[0]));
                     j++;
                 }
-                sheet.getRow(rowIndex - j).createCell(2).setCellValue(keyTemp);
+                sheet.getRow(rowIndex - j).createCell(3).setCellValue(keyTemp);
             }
         }
 
+/*        // không cần tạo nữa vì chiều dài bozai sẽ ghi vào cột 4
+        // thay vì cột 3 như trước nên không thể ghi thêm các thông tin này vào cột 4 nữa
         // nếu không có hàng sản phẩm nào thì sẽ chưa tạo hàng 4, 5, 6, 7, 8 và rowIndex vẫn là 3
         // cần tạo thêm 4 hàng này để ghi các thông tin kouJiMe, kyakuSakiMei, shortNouKi, kirirosu, fileName bên dưới
         for (int i = 0; i < 5; i++) {
@@ -380,7 +387,7 @@ public class ReadPDFToExcel {
         sheet.getRow(4).createCell(3).setCellValue(kyakuSakiMei);
         sheet.getRow(5).createCell(3).setCellValue(shortNouKi);
         sheet.getRow(6).createCell(3).setCellValue(kirirosu);
-        sheet.getRow(7).createCell(3).setCellValue(fileChlName + " " + kouSyu);
+        sheet.getRow(7).createCell(3).setCellValue(fileChlName + " " + kouSyu);*/
 
         // Ghi giá trị 0 vào các ô A99, B99, C99, D99
         Row lastRow = sheet.createRow(rowIndex);
@@ -390,7 +397,8 @@ public class ReadPDFToExcel {
         lastRow.createCell(3).setCellValue(0);
 
         String[] linkarr = pdfPath.split("\\\\");
-        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".xlsx";
+//        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".xlsx";
+        fileName = fileChlName + " " + kouSyu + ".xlsx";
 //        String fileNameAndTime = linkarr[linkarr.length - 1].split("\\.")[0] + "(" + sdfSecond.format(currentDate) + ")--" + kouSyu + ".csv";
         String excelPath = csvExcelDirPath + "\\" + fileName;
 
