@@ -94,7 +94,7 @@ public class ReadPDFToExcel {
             // tạo map kaKouPairs và nhập thông tin tính vật liệu vào
             // kaKouPairs là map chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
             // còn value của kaKouPairs cũng là map chứa các cặp key là chiều dài sản phẩm, value là số lượng sản phẩm
-            Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> kaKouPairs = getToriaiData(kakuKakou);
+            Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
             //                writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
 //                writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
@@ -185,64 +185,100 @@ public class ReadPDFToExcel {
         }
     }
 
-    private static Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> getToriaiData(String[] kakuKakou) throws TimeoutException {
+    private static Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> getToriaiData(String[] kakuKakou) throws TimeoutException {
         rowToriAiNum = 0;
 
-        Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> kaKouPairs = new LinkedHashMap<>();
+        Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = new LinkedHashMap<>();
 
         if (kakuKakou == null) {
             return kaKouPairs;
         }
-        for (int i = 1; i < kakuKakou.length; i++) {
 
+        // lặp qua các đoạn bozai và thêm chúng vào map chứa toàn bộ thông tin vật liệu
+        for (int i = 1; i < kakuKakou.length; i++) {
+            // lấy kirirosu tại lần 1
             if (i == 1) {
                 kirirosu = extractValue(kakuKakou[i], "切りﾛｽ設定:", "mm");
             }
 
+            // lấy đoạn bozai đang lặp
             String kaKouText = kakuKakou[i];
 
+            // map chứa cặp chiều dài, số lượng bozai
             Map<StringBuilder, Integer> kouZaiChouPairs = new LinkedHashMap<>();
-            Map<StringBuilder, Integer> meiSyouPairs = new LinkedHashMap<>();
+            // map chứa cặp key là mảng chứa tên + chiều dài sản phẩm, value là số lượng
+            Map<StringBuilder[], Integer> meiSyouPairs = new LinkedHashMap<>();
 
+            // tạo mảng chứa các dòng trong đoạn bozai
             String[] kaKouLines = kaKouText.split("\n");
 
+            // duyệt qua các dòng để thêm vào map
             for (String line : kaKouLines) {
+                // nếu dòng có 鋼材長 và 本数 thì là dòng chứa bozai
+                // lấy bozai và số lượng thêm vào map
                 if (line.contains("鋼材長:") && line.contains("本数:")) {
                     String kouZaiChou = extractValue(line, "鋼材長:", "mm");
                     String honSuu = extractValue(line, "本数:", " ").split(" ")[0];
                     kouZaiChouPairs.put(new StringBuilder().append(convertStringToIntAndMul(kouZaiChou, 1)), convertStringToIntAndMul(honSuu, 1));
                 }
 
+                // nếu dòng chứa 名称 thì là dòng sản phẩm
                 if (line.contains("名称")) {
+                    // lấy vùng chứa tên và chiều dài sản phẩm
                     String meiSyouLength = extractValue(line, "名称", "mm x").trim();
+                    // tách vùng trên thành mảng chứa các phần tử tên và chiều dài
                     String[] meiSyouLengths = meiSyouLength.split(" ");
+
+                    // tạo biến chứa tên
+                    String name = "";
+                    // vì vùng chứa chiều dài có thể có dấu cách nên phải lấy từ phần tử đầu tiên đến phần tử trước phần tử cuối cùng
+                    for (int j = 0; j < meiSyouLengths.length - 1; j++) {
+                        name = name.concat(meiSyouLengths[j]);
+                    }
+
+                    // lấy vùng chứa chiều dài là vùng cuối cùng trong mảng tên
                     String length = meiSyouLengths[meiSyouLengths.length - 1];
 
+                    // thêm tên và chiều dài vào mảng với chiều dài x 100
+                    StringBuilder[] nameAndLength = {new StringBuilder().append(name), new StringBuilder().append(convertStringToIntAndMul(length, 100))};
+
+                    // lấy số lượng sản phẩm
                     String meiSyouHonSuu = extractValue(line, "mm x", "本").trim();
-                    meiSyouPairs.put(new StringBuilder().append(convertStringToIntAndMul(length, 100)), convertStringToIntAndMul(meiSyouHonSuu, 1));
+                    // thêm cặp tên + chiều dài và số lượng vào map
+                    meiSyouPairs.put(nameAndLength, convertStringToIntAndMul(meiSyouHonSuu, 1));
                 }
             }
 
+            // thêm 2 map chứa thông tin vật liệu vào map gốc
             kaKouPairs.put(kouZaiChouPairs, meiSyouPairs);
         }
 
+        // in thông tin vật liệu
         kaKouPairs.forEach((kouZaiChouPairs, meiSyouPairs) -> {
             kouZaiChouPairs.forEach((key, value) -> System.out.println("\n" + key.toString() + " : " + value));
-            meiSyouPairs.forEach((key, value) -> System.out.println(key.toString() + " : " + value));
+            meiSyouPairs.forEach((key, value) -> System.out.println(key[0].toString() + " " + key[1].toString() + " : " + value));
         });
 
-        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> e : kaKouPairs.entrySet()) {
+        // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
+        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
 
+            // lấy map chiều dài bozai và số lượng
             Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
-            Map<StringBuilder, Integer> meiSyouPairs = e.getValue();
+            // lấy map tên + chiều dài sản phẩm và số lượng
+            Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+            // tạo biến chứa số lượng bozai
             int kouZaiNum = 1;
+            // lặp qua map bozai lấy giá trị số lượng bozai
             for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
                 kouZaiNum = entry.getValue();
             }
 
+            // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(kouZaiNum * meiSyouPairs.size())
+            // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
             rowToriAiNum += kouZaiNum * meiSyouPairs.size();
         }
 
+        // nếu số dòng lớn hơn 99 th cho bằng 99 rồi ném ngoại lệ timeout để cho chương trình biết rồi hiển thị thông báo
         if (rowToriAiNum > 99) {
             rowToriAiNum = 99;
             System.out.println("vượt quá 99 hàng");
@@ -252,6 +288,7 @@ public class ReadPDFToExcel {
         System.out.println(rowToriAiNum);
         System.out.println("\n" + kirirosu);
 
+        // trả về map kết quả để ghi vào file chl sysc2
         return kaKouPairs;
     }
 
@@ -538,7 +575,7 @@ public class ReadPDFToExcel {
 
     }
 
-    private static void writeDataToChl(Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
+    private static void writeDataToChl(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
         Date currentDate = new Date();
@@ -546,7 +583,8 @@ public class ReadPDFToExcel {
 //        // Tạo thêm fomat có thêm giây
 //        SimpleDateFormat sdfSecond = new SimpleDateFormat("yyMMddHHmmss");
 
-        // Tăng thời gian lên timePlus phút
+/*        // Tăng thời gian lên timePlus phút
+        // hiện tại không dùng đoạn code này nữa
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.MINUTE, timePlus);
@@ -554,7 +592,9 @@ public class ReadPDFToExcel {
         // Lấy thời gian sau khi tăng
         Date newDate = calendar.getTime();
 
-        String newTime = sdf.format(currentDate);
+        String newTime = sdf.format(newDate);*/
+
+        String currentTime = sdf.format(currentDate);
 
         // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2
         fileName = fileChlName + " " + kouSyu + ".sysc2";
@@ -586,7 +626,7 @@ public class ReadPDFToExcel {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
-            writer.write(newTime + "+" + timePlus + ",,,"); writer.newLine();
+            writer.write(currentTime + "+" + timePlus + ",,,"); writer.newLine();
 
 
             // Ghi size1, size2, size3, 1 vào dòng tiếp theo
