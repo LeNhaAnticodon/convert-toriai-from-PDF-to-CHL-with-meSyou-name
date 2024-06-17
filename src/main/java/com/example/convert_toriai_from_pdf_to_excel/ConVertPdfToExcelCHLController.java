@@ -558,7 +558,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 // phần cố định sẽ có trong map languageMap và lấy được keyHeader trong languageMap
                 // từ keyHeader lấy được ngôn ngữ đang dùng trong bundle
                 // phần tách tiếp ngôn ngữ chia 2 nửa tại điểm " rồi thêm " + fileName + " vào giữa để hiển thị hoàn chỉnh theo ngôn ngữ này
-                if (header.contains(".sysc2")) {
+                if (header.contains(".sysc2") || header.contains(".csv") || header.contains(".xlsx") ) {
                     String[] headerarr = header.split("\"");
                     fileName = headerarr[1];
                     header = headerarr[0] + "\"\"" + headerarr[2];

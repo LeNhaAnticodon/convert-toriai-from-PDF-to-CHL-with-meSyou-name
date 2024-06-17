@@ -1,4 +1,5 @@
 package com.example.convert_toriai_from_pdf_to_excel.convert;
+
 import com.example.convert_toriai_from_pdf_to_excel.model.CsvFile;
 import com.opencsv.CSVWriter;
 import javafx.collections.ObservableList;
@@ -46,6 +47,7 @@ public class ReadPDFToExcel {
 
         pdfPath = filePDFPath;
 //        csvExcelDirPath = fileCSVDirPath;
+        csvExcelDirPath = fileChlDirPath;
 
         chlDirPath = fileChlDirPath;
 
@@ -97,16 +99,16 @@ public class ReadPDFToExcel {
             Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
             //                writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
-//                writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
+            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin vào file định dạng sysc2 là file của chl
-            writeDataToChl(kaKouPairs, i, csvFileNames);
+//            writeDataToChl(kaKouPairs, i, csvFileNames);
         }
 
     }
 
     private static String[] getFullToriaiText() throws IOException {
         String[] kakuKouSyu = new String[0];
-        try(PDDocument document = PDDocument.load(new File(pdfPath))) {
+        try (PDDocument document = PDDocument.load(new File(pdfPath))) {
             if (!document.isEncrypted()) {
                 PDFTextStripper pdfStripper = new PDFTextStripper();
                 String toriaiText = pdfStripper.getText(document);
@@ -388,23 +390,9 @@ public class ReadPDFToExcel {
         lastRow.createCell(3).setCellValue(0);
 
         String[] linkarr = pdfPath.split("\\\\");
-        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".csv";
+        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".xlsx";
 //        String fileNameAndTime = linkarr[linkarr.length - 1].split("\\.")[0] + "(" + sdfSecond.format(currentDate) + ")--" + kouSyu + ".csv";
         String excelPath = csvExcelDirPath + "\\" + fileName;
-
-        csvFileNames.add(new CsvFile(fileName, kouSyuName));
-
-        try (FileOutputStream fileOut = new FileOutputStream(excelPath)) {
-            workbook.write(fileOut);
-            workbook.close();
-        } catch (IOException e) {
-            if (e instanceof FileNotFoundException) {
-                System.out.println("File đang được mở bởi người dùng khác");
-                throw new FileNotFoundException();
-            }
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
 
         // Tạo đối tượng File đại diện cho file cần xóa
         File file = new File(excelPath);
@@ -420,6 +408,18 @@ public class ReadPDFToExcel {
             }
         }
 
+        try (FileOutputStream fileOut = new FileOutputStream(excelPath)) {
+            workbook.write(fileOut);
+            workbook.close();
+        } catch (IOException e) {
+            if (e instanceof FileNotFoundException) {
+                System.out.println("File đang được mở bởi người dùng khác");
+                throw new FileNotFoundException();
+            }
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+
         // Đặt quyền chỉ đọc cho file
         File readOnly = new File(excelPath);
         if (readOnly.exists()) {
@@ -432,6 +432,9 @@ public class ReadPDFToExcel {
         } else {
             System.out.println("File does not exist.");
         }
+
+        csvFileNames.add(new CsvFile(fileName, kouSyuName));
+
     }
 
     private static void writeDataToCSV(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
@@ -456,14 +459,13 @@ public class ReadPDFToExcel {
         String currentTime = sdf.format(currentDate);
 
         String[] linkarr = pdfPath.split("\\\\");
-        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".csv";
+//        fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".csv";
+        fileName = fileChlName + " " + kouSyu + ".csv";
 //        // tạo tên file có gắn thêm thời gian để không trùng với file trước đó
 //        String fileNameAndTime = linkarr[linkarr.length - 1].split("\\.")[0] + "(" + sdfSecond.format(currentDate) + ")--" + kouSyu + ".csv";
         String csvPath = csvExcelDirPath + "\\" + fileName;
         System.out.println("dir path: " + csvExcelDirPath);
         System.out.println("filename: " + fileName);
-
-        csvFileNames.add(new CsvFile(fileName, kouSyuName));
 
         // Tạo đối tượng File đại diện cho file cần xóa
         File file = new File(csvPath);
@@ -484,8 +486,7 @@ public class ReadPDFToExcel {
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvPath), Charset.forName("MS932")))) {
 
 
-
-            writer.writeNext(new String[]{currentTime});
+            writer.writeNext(new String[]{currentTime + "+" + timePlus});
 
             // Ghi size1, size2, size3, 1 vào dòng tiếp theo
             writer.writeNext(new String[]{String.valueOf(size1), String.valueOf(size2), String.valueOf(size3), "1"});
@@ -556,7 +557,6 @@ public class ReadPDFToExcel {
             writer.writeNext(new String[]{"0", "0", "0", "0"});
 
 
-
         } catch (IOException e) {
             if (e instanceof FileNotFoundException) {
                 System.out.println("File đang được mở bởi người dùng khác");
@@ -578,6 +578,8 @@ public class ReadPDFToExcel {
         } else {
 //            System.out.println("File does not exist.");
         }
+
+        csvFileNames.add(new CsvFile(fileName, kouSyuName));
 
     }
 
@@ -614,7 +616,6 @@ public class ReadPDFToExcel {
         System.out.println("filename: " + fileName);
 
 
-
         // Tạo đối tượng File đại diện cho file cần xóa
         File file = new File(chlPath);
 
@@ -633,14 +634,17 @@ public class ReadPDFToExcel {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
-            writer.write(currentTime + "+" + timePlus + ",,,"); writer.newLine();
+            writer.write(currentTime + "+" + timePlus + ",,,");
+            writer.newLine();
 
 
             // Ghi size1, size2, size3, 1 vào dòng tiếp theo
-            writer.write(size1 + "," + size2 + "," + size3 + "," + "1"); writer.newLine();
+            writer.write(size1 + "," + size2 + "," + size3 + "," + "1");
+            writer.newLine();
 
             // Ghi koSyuNumMark, 1, 99, 1 vào dòng tiếp theo, rowToriAiNum sẽ được sử dụng sau khi ước tính ghi đến hàng 102
-            writer.write(koSyuNumMark + "," + "1" + "," + "99" + "," + "1"); writer.newLine();
+            writer.write(koSyuNumMark + "," + "1" + "," + "99" + "," + "1");
+            writer.newLine();
 
             // tạo list chứa các mảng, mỗi mảng là 1 dòng cần ghi theo fomat của chl
             List<String[]> toriaiDatas = new LinkedList<>();
@@ -741,20 +745,26 @@ public class ReadPDFToExcel {
 
             // ghi nốt các dòng còn lại không có sản phẩn ",,," để đủ 99 sản phẩm
             for (int i = toriaiDatas.size(); i < 99; i++) {
-                writer.write(",,,"); writer.newLine();
+                writer.write(",,,");
+                writer.newLine();
             }
 
 
             // Ghi giá trị 0 vào dòng tiếp theo là dòng 103
-            writer.write("0,0,0,0");  writer.newLine();
+            writer.write("0,0,0,0");
+            writer.newLine();
             // ghi 20 vaf kirirosu vào dòng tiếp
-            writer.write("20.0," + kirirosu + ",,");  writer.newLine();
+            writer.write("20.0," + kirirosu + ",,");
+            writer.newLine();
             // ghi các tên và ngày vào dòng tiếp
-            writer.write(kouJiMe + "," +  kyakuSakiMei + "," +  shortNouKi + ",");  writer.newLine();
+            writer.write(kouJiMe + "," + kyakuSakiMei + "," + shortNouKi + ",");
+            writer.newLine();
             // dòng tiếp theo là ghi 備考１、備考２ theo định dạng 備考１,備考２,, nhưng không có nên không cần chỉ ghi (,,,)
-            writer.write(",,,");  writer.newLine();
+            writer.write(",,,");
+            writer.newLine();
             // ghi dấu hiệu nhận biết kết thúc
-            writer.write("END,,,");  writer.newLine();
+            writer.write("END,,,");
+            writer.newLine();
 
 
         } catch (IOException e) {
