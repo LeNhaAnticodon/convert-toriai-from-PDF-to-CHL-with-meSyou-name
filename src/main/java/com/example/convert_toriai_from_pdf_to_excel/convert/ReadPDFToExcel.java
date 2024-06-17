@@ -233,7 +233,7 @@ public class ReadPDFToExcel {
                     String name = "";
                     // vì vùng chứa chiều dài có thể có dấu cách nên phải lấy từ phần tử đầu tiên đến phần tử trước phần tử cuối cùng
                     for (int j = 0; j < meiSyouLengths.length - 1; j++) {
-                        name = name.concat(meiSyouLengths[j]);
+                        name = name.concat(meiSyouLengths[j] + " ");
                     }
 
                     // lấy vùng chứa chiều dài là vùng cuối cùng trong mảng tên
@@ -434,7 +434,7 @@ public class ReadPDFToExcel {
         }
     }
 
-    private static void writeDataToCSV(Map<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
+    private static void writeDataToCSV(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
         Date currentDate = new Date();
@@ -442,7 +442,7 @@ public class ReadPDFToExcel {
 //        // Tạo thêm fomat có thêm giây
 //        SimpleDateFormat sdfSecond = new SimpleDateFormat("yyMMddHHmmss");
 
-        // Tăng thời gian lên timePlus phút
+        /*// Tăng thời gian lên timePlus phút
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.MINUTE, timePlus);
@@ -450,7 +450,10 @@ public class ReadPDFToExcel {
         // Lấy thời gian sau khi tăng
         Date newDate = calendar.getTime();
 
-        String newTime = sdf.format(newDate);
+        String newTime = sdf.format(newDate);*/
+
+        // lấy thời gian hiện tại với fomat đã chọn
+        String currentTime = sdf.format(currentDate);
 
         String[] linkarr = pdfPath.split("\\\\");
         fileName = linkarr[linkarr.length - 1].split("\\.")[0] + " " + kouSyu + ".csv";
@@ -482,7 +485,7 @@ public class ReadPDFToExcel {
 
 
 
-            writer.writeNext(new String[]{newTime});
+            writer.writeNext(new String[]{currentTime});
 
             // Ghi size1, size2, size3, 1 vào dòng tiếp theo
             writer.writeNext(new String[]{String.valueOf(size1), String.valueOf(size2), String.valueOf(size3), "1"});
@@ -495,16 +498,16 @@ public class ReadPDFToExcel {
             int rowIndex = 3;
 
             // Ghi dữ liệu từ KA_KOU_PAIRS vào các ô
-            for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> entry : kaKouPairs.entrySet()) {
+            for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> entry : kaKouPairs.entrySet()) {
                 if (rowIndex >= 102) break;
 
                 Map<StringBuilder, Integer> kouZaiChouPairs = entry.getKey();
-                Map<StringBuilder, Integer> meiSyouPairs = entry.getValue();
+                Map<StringBuilder[], Integer> meiSyouPairs = entry.getValue();
 
                 String keyTemp = "";
                 int valueTemp = 0;
 
-                // Ghi dữ liệu từ mapkey vào ô C4
+                // Ghi dữ liệu từ mapkey vào ô D4
                 for (Map.Entry<StringBuilder, Integer> kouZaiEntry : kouZaiChouPairs.entrySet()) {
 
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
@@ -514,21 +517,24 @@ public class ReadPDFToExcel {
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
                 for (int i = 0; i < valueTemp; i++) {
                     int j = 0;
-                    for (Map.Entry<StringBuilder, Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
+                    for (Map.Entry<StringBuilder[], Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
                         if (rowIndex >= 102) break;
 
                         String[] line = new String[4];
                         rowIndex++;
-                        line[0] = String.valueOf(meiSyouEntry.getKey());
+                        line[0] = String.valueOf(meiSyouEntry.getKey()[1]);
                         line[1] = meiSyouEntry.getValue().toString();
+                        line[2] = String.valueOf(meiSyouEntry.getKey()[0]);
 
                         toriaiDatas.add(line);
                         j++;
                     }
-                    toriaiDatas.get(toriaiDatas.size() - j)[2] = keyTemp;
+                    toriaiDatas.get(toriaiDatas.size() - j)[3] = keyTemp;
                 }
             }
 
+/*            // không cần tạo nữa vì chiều dài bozai sẽ ghi vào cột 4
+            // thay vì cột 3 như trước nên không thể ghi thêm các thông tin này vào cột 4 nữa
             // nếu không có hàng sản phẩm nào thì sẽ chưa tạo hàng 4, 5, 6, 7, 8 và rowIndex vẫn là 3
             // cần tạo thêm 4 hàng này để ghi các thông tin kouJiMe, kyakuSakiMei, shortNouKi, kirirosu, fileName bên dưới
             for (int i = 0; i < 5; i++) {
@@ -542,7 +548,7 @@ public class ReadPDFToExcel {
             toriaiDatas.get(1)[3] = kyakuSakiMei;
             toriaiDatas.get(2)[3] = shortNouKi;
             toriaiDatas.get(3)[3] = kirirosu;
-            toriaiDatas.get(4)[3] = fileChlName + " " + kouSyu;
+            toriaiDatas.get(4)[3] = fileChlName + " " + kouSyu;*/
 
             writer.writeAll(toriaiDatas);
 
@@ -594,6 +600,7 @@ public class ReadPDFToExcel {
 
         String newTime = sdf.format(newDate);*/
 
+        // lấy thời gian hiện tại với fomat đã chọn
         String currentTime = sdf.format(currentDate);
 
         // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2
@@ -635,50 +642,60 @@ public class ReadPDFToExcel {
             // Ghi koSyuNumMark, 1, 99, 1 vào dòng tiếp theo, rowToriAiNum sẽ được sử dụng sau khi ước tính ghi đến hàng 102
             writer.write(koSyuNumMark + "," + "1" + "," + "99" + "," + "1"); writer.newLine();
 
+            // tạo list chứa các mảng, mỗi mảng là 1 dòng cần ghi theo fomat của chl
             List<String[]> toriaiDatas = new LinkedList<>();
 
             int rowIndex = 3;
 
             // Ghi dữ liệu từ KA_KOU_PAIRS vào các ô
             // kaKouPairs là map chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
-            // còn value của kaKouPairs cũng là map chứa các cặp key là chiều dài sản phẩm, value là số lượng sản phẩm
-            for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder, Integer>> entry : kaKouPairs.entrySet()) {
+            // còn value của kaKouPairs cũng là map chứa các cặp key là tên + chiều dài sản phẩm, value là số lượng sản phẩm
+            for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> entry : kaKouPairs.entrySet()) {
                 if (rowIndex >= 102) break;
 
                 Map<StringBuilder, Integer> kouZaiChouPairs = entry.getKey();
-                Map<StringBuilder, Integer> meiSyouPairs = entry.getValue();
+                Map<StringBuilder[], Integer> meiSyouPairs = entry.getValue();
 
                 // chiều dài bozai
                 String keyTemp = "";
                 // số lượng bozai
                 int valueTemp = 0;
 
-                // Ghi dữ liệu bozai từ mapkey vào ô C4 kouZaiChouPairs
+                // Ghi dữ liệu bozai từ mapkey vào ô D4 kouZaiChouPairs
                 for (Map.Entry<StringBuilder, Integer> kouZaiEntry : kouZaiChouPairs.entrySet()) {
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
                     valueTemp = kouZaiEntry.getValue();
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
+                // số lượng bozai là bao nhiêu thì phải ghi bấy nhiêu lần
                 for (int i = 0; i < valueTemp; i++) {
                     int j = 0; // đếm số hàng đã ghi
                     // lặp qua map sản phẩm, tính chiều dài map bằng j
-                    for (Map.Entry<StringBuilder, Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
+                    for (Map.Entry<StringBuilder[], Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
                         if (rowIndex >= 102) break;
 
-                        String[] line = new String[3];
+                        // tạo mảng lưu dòng đang lặp gồm 4 phần tử lần lượt là
+                        // chiều dài sản phẩm, số lượng sản phẩm, tên sản phẩm, chiều dài bozai
+                        String[] line = new String[4];
                         rowIndex++;
-                        line[0] = String.valueOf(meiSyouEntry.getKey());
+                        // ghi chiều dài sản phẩm
+                        line[0] = String.valueOf(meiSyouEntry.getKey()[1]);
+                        // ghi số lượng sản phẩm
                         line[1] = meiSyouEntry.getValue().toString();
+                        // ghi tên sản phẩm
+                        line[2] = String.valueOf(meiSyouEntry.getKey()[0]);
                         // ghi vào phần tử thứ 3 của mảng giá trị rỗng để tránh giá trị null
-                        line[2] = "";
+                        line[3] = "";
 
+                        // thêm hàng sản phẩm vừa tạo vào list
                         toriaiDatas.add(line);
+                        // tăng số hàng lên 1
                         j++;
                     }
-                    // ghi vào cột 3 ([2]) chiều dài bozai khi ghi xong 1 lượt sản phẩm + số lượng
+                    // ghi vào cột 4 ([3]) chiều dài bozai khi ghi xong 1 lượt sản phẩm + số lượng
                     // tính vị trí của nó bằng cách lấy size của list kaKouPairs - chiều dài map sản phẩm
-                    toriaiDatas.get(toriaiDatas.size() - j)[2] = keyTemp;
+                    toriaiDatas.get(toriaiDatas.size() - j)[3] = keyTemp;
                 }
             }
 
@@ -695,7 +712,8 @@ public class ReadPDFToExcel {
 
 /*
             // Ghi kouJiMe, kyakuSakiMei, shortNouKi, kirirosu, fileName + " " + kouSyu vào ô D4, D5, D6, D7
-            // không cần tạo nữa vì ghi file sysc2 sẽ ghi xuống cuối
+            // không cần tạo nữa vì ghi file sysc2 sẽ ghi xuống cuối và vì chiều dài bozai sẽ ghi vào cột 4
+            // thay vì cột 3 như trước nên không thể ghi thêm các thông tin này vào cột 4 nữa
             toriaiDatas.get(0)[3] = kouJiMe;
             toriaiDatas.get(1)[3] = kyakuSakiMei;
             toriaiDatas.get(2)[3] = shortNouKi;
@@ -704,9 +722,19 @@ public class ReadPDFToExcel {
 */
             // lặp qua list chứa các dòng toriaiDatas
             for (String[] line : toriaiDatas) {
-                // mỗi dòng là 1 mảng nên lặp qua mảng ghi các phần tử vào dòng phân tách nhau bởi dấu (,)
+
+/*                // cách ghi này không dùng được nữa vì cách ghi phần tử cuối cùng đã thay đổi
                 for (String length : line) {
                     writer.write(length + ",");
+                }*/
+
+                // mỗi dòng là 1 mảng nên lặp qua mảng ghi các phần tử vào dòng phân tách nhau bởi dấu (,)
+                for (int i = 0; i < line.length; i++) {
+                    if (i == line.length - 1) {
+                        writer.write(line[i]);
+                    } else {
+                        writer.write(line[i] + ",");
+                    }
                 }
                 writer.newLine();
             }
