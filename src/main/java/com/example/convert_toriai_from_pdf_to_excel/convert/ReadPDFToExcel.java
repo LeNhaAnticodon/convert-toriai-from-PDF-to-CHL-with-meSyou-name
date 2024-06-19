@@ -340,8 +340,8 @@ public class ReadPDFToExcel {
         int rowIndex = 3;
 
         // tổng chiều dài các kozai
-        int kouzaiChouGoukei = 0;
-        int seiHinChouGoukei = 0;
+        double kouzaiChouGoukei = 0;
+        double seiHinChouGoukei = 0;
         // Ghi dữ liệu từ KA_KOU_PAIRS vào các ô
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> entry : kaKouPairs.entrySet()) {
             if (rowIndex >= 102) break;
@@ -358,7 +358,7 @@ public class ReadPDFToExcel {
                 keyTemp = String.valueOf(kouZaiEntry.getKey());
                 valueTemp = kouZaiEntry.getValue();
                 // cộng thêm chiều dài của bozai * số lượng vào tổng
-                kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
+                kouzaiChouGoukei += Double.parseDouble(keyTemp) * valueTemp;
             }
 
             // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -377,7 +377,7 @@ public class ReadPDFToExcel {
                     row.createCell(2).setCellValue(String.valueOf(meiSyouEntry.getKey()[0]));
 
                     // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
-                    seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
+                    seiHinChouGoukei += Double.parseDouble(leng) * Double.parseDouble(num);
                     j++;
                 }
                 sheet.getRow(rowIndex - j).createCell(3).setCellValue(keyTemp);
@@ -505,8 +505,8 @@ public class ReadPDFToExcel {
 //            System.out.println("File không tồn tại.");
         }
         // tổng chiều dài các kozai
-        int kouzaiChouGoukei = 0;
-        int seiHinChouGoukei = 0;
+        double kouzaiChouGoukei = 0;
+        double seiHinChouGoukei = 0;
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvPath), Charset.forName("MS932")))) {
 
 
@@ -539,7 +539,7 @@ public class ReadPDFToExcel {
                     valueTemp = kouZaiEntry.getValue();
 
                     // cộng thêm chiều dài của bozai * số lượng vào tổng
-                    kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
+                    kouzaiChouGoukei += Double.parseDouble(keyTemp) * valueTemp;
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -562,7 +562,7 @@ public class ReadPDFToExcel {
                         line[2] = String.valueOf(meiSyouEntry.getKey()[0]);
 
                         // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
-                        seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
+                        seiHinChouGoukei += Double.parseDouble(leng) * Double.parseDouble(num);
                         toriaiDatas.add(line);
                         j++;
                     }
@@ -671,8 +671,8 @@ public class ReadPDFToExcel {
         }
 
         // tổng chiều dài các kozai
-        int kouzaiChouGoukei = 0;
-        int seiHinChouGoukei = 0;
+        double kouzaiChouGoukei = 0;
+        double seiHinChouGoukei = 0;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
             writer.write(currentTime + "+" + timePlus + ",,,");
@@ -712,7 +712,7 @@ public class ReadPDFToExcel {
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
                     valueTemp = kouZaiEntry.getValue();
                     // cộng thêm chiều dài của bozai * số lượng vào tổng
-                    kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
+                    kouzaiChouGoukei += Double.parseDouble(keyTemp) * valueTemp;
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -742,7 +742,7 @@ public class ReadPDFToExcel {
                         line[3] = "";
 
                         // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
-                        seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
+                        seiHinChouGoukei += Double.parseDouble(leng) * Double.parseDouble(num);
 
                         // thêm hàng sản phẩm vừa tạo vào list
                         toriaiDatas.add(line);

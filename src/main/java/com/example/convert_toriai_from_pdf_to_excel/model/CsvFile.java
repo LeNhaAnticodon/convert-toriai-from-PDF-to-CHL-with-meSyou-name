@@ -5,8 +5,8 @@ public class CsvFile {
 
     private String kouSyuName;
 
-    private int kouzaiChouGoukei;
-    private int seiHinChouGoukei;
+    private final double kouzaiChouGoukei;
+    private final double seiHinChouGoukei;
 
     public String getKouSyuName() {
         return kouSyuName;
@@ -16,7 +16,7 @@ public class CsvFile {
         this.kouSyuName = kouSyuName;
     }
 
-    public CsvFile(String name, String kouSyuName, int kouzaiChouGoukei, int seiHinChouGoukei) {
+    public CsvFile(String name, String kouSyuName, double kouzaiChouGoukei, double seiHinChouGoukei) {
         this.name = name;
         this.kouSyuName = kouSyuName;
         this.kouzaiChouGoukei = kouzaiChouGoukei;
@@ -31,11 +31,11 @@ public class CsvFile {
         this.name = name;
     }
 
-    public int getKouzaiChouGoukei() {
+    public double getKouzaiChouGoukei() {
         return kouzaiChouGoukei;
     }
 
-    public int getSeiHinChouGoukei() {
+    public double getSeiHinChouGoukei() {
         return seiHinChouGoukei;
     }
 

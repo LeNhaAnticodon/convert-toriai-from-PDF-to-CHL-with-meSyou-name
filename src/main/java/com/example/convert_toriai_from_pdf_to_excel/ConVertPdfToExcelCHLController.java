@@ -25,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -42,6 +43,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -414,7 +417,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 if (e instanceof FileNotFoundException) {
                     confirmAlert.getButtonTypes().clear();
                     confirmAlert.getButtonTypes().add(ButtonType.OK);
-                    confirmAlert.setHeaderText("Tên file CHL đang tạo: (\"" + ReadPDFToExcel.fileName +  "\") trùng tên với 1 file CHL khác đang được mở nên không thể ghi đè");
+                    confirmAlert.setHeaderText("Tên file CHL đang tạo: (\"" + ReadPDFToExcel.fileName + "\") trùng tên với 1 file CHL khác đang được mở nên không thể ghi đè");
                     confirmAlert.setContentText("Hãy đóng file CHL đang mở để tiếp tục!");
                     System.out.println("File đang được mở bởi người dùng khác");
                     updateLangAlert(confirmAlert);
@@ -428,7 +431,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 if (e instanceof TimeoutException) {
                     confirmAlert.getButtonTypes().clear();
                     confirmAlert.getButtonTypes().add(ButtonType.OK);
-                    confirmAlert.setHeaderText("File CHL đang tạo: (\"" + ReadPDFToExcel.fileName +  "\") có số dòng sản phẩm cần ghi lớn hơn 99 nên không thể ghi");
+                    confirmAlert.setHeaderText("File CHL đang tạo: (\"" + ReadPDFToExcel.fileName + "\") có số dòng sản phẩm cần ghi lớn hơn 99 nên không thể ghi");
                     confirmAlert.setContentText("Hãy chỉnh sửa lại dữ liệu vật liệu đang chuyển để tiếp tục!");
                     System.out.println("Vật liệu có số dòng lớn hơn 99");
                     updateLangAlert(confirmAlert);
@@ -439,7 +442,6 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
                     return;
                 }
-
 
 
                 Optional<ButtonType> result = confirmAlert.showAndWait();
@@ -558,7 +560,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 // phần cố định sẽ có trong map languageMap và lấy được keyHeader trong languageMap
                 // từ keyHeader lấy được ngôn ngữ đang dùng trong bundle
                 // phần tách tiếp ngôn ngữ chia 2 nửa tại điểm " rồi thêm " + fileName + " vào giữa để hiển thị hoàn chỉnh theo ngôn ngữ này
-                if (header.contains(".sysc2") || header.contains(".csv") || header.contains(".xlsx") ) {
+                if (header.contains(".sysc2") || header.contains(".csv") || header.contains(".xlsx")) {
                     String[] headerarr = header.split("\"");
                     fileName = headerarr[1];
                     header = headerarr[0] + "\"\"" + headerarr[2];
@@ -672,29 +674,63 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                         super.updateItem(csvFile, empty);
 
                         if (csvFile != null && !empty) {
+                            // vùng chứa tên file
                             Label labelName = new Label(csvFile.getName());
-//                            labelName.setMaxWidth(Double.MAX_VALUE);
+                            // cài label có chiều ngang tối đa max
+                            labelName.setMaxWidth(Double.MAX_VALUE);
+                            // chọn chiều ngang tối thiểu là 188, do cài HBox.setHgrow(labelName, Priority.SOMETIMES);
+                            // nên nếu hbox có thể dài hơn thì label cũng có thể dài theo
+                            labelName.setPrefWidth(188);
+                            labelName.setWrapText(true);
+                            // chữ ở trung tâm
                             labelName.setAlignment(Pos.CENTER);
-                            labelName.setStyle("-fx-background-color: blue;");
+//                            labelName.setStyle("-fx-background-color: blue;");
+                            labelName.setStyle("-fx-padding: 0 0 0 3;");
+                            // chữ màu BLUE
                             labelName.setTextFill(Color.BLUE);
+                            // cho label chiếm chiều ngang hết những vùng còn thừa
+                            HBox.setHgrow(labelName, Priority.SOMETIMES);
 
-                            Label labelKouzaiChou = new Label(csvFile.getKouzaiChouGoukei() + "");
-                            labelKouzaiChou.setMaxWidth(USE_PREF_SIZE);
-                            labelKouzaiChou.setStyle("-fx-background-color: green");
+                            // lấy tổng chiều dài bozai, tính theo m lên / 1000
+                            double kouzaiChouGoukei = csvFile.getKouzaiChouGoukei() / 1000;
+                            // lấy tổng chiều dài sản phẩm, tính theo m nên / 1000 và do chiều dài bị x100 trước nên cần / 100
+                            double seiHinChouGoukei = (csvFile.getSeiHinChouGoukei() / 100) / 1000;
 
-                            Label labelSeihinChou = new Label(((double)csvFile.getSeiHinChouGoukei()) / 100 + "");
-                            labelSeihinChou.setMaxWidth(USE_PREF_SIZE);
-                            labelSeihinChou.setStyle("-fx-background-color: red");
+                            // tạo đối tượng fomat số theo định dạng Nhật
+                            NumberFormat numberFormat = NumberFormat.getInstance(new Locale("ja", "JA"));
 
+                            // làm tròn các chiều dài về 2 chữ số thập phân
+                            // hàm round trả về long nên cần x100 trước, nó sẽ làm tròn số về long, sau đó chuyển sang double và
+                            // /100 sẽ được số double có 2 số sau phần thập phân
+                            String formattedKouzaiChouGoukei = numberFormat.format((double) Math.round(kouzaiChouGoukei * 100) / 100);
+                            String formattedseiHinChouGoukei = numberFormat.format((double) Math.round(seiHinChouGoukei * 100) / 100);
+
+                            // vùng chứa tổng chiều dài bozai
+                            Label labelKouzaiChou = new Label(formattedKouzaiChouGoukei + "  ");
+                            labelKouzaiChou.setMinWidth(USE_PREF_SIZE);
+                            labelKouzaiChou.setPrefWidth(59);
+                            labelKouzaiChou.setStyle("-fx-text-fill: #F57C00");
+                            labelKouzaiChou.setAlignment(Pos.CENTER_RIGHT);
+
+                            // vùng chứa tổng chiều dài sản phẩm
+                            Label labelSeihinChou = new Label("  " + formattedseiHinChouGoukei);
+                            labelSeihinChou.setMinWidth(USE_PREF_SIZE);
+                            labelSeihinChou.setPrefWidth(59);
+                            labelSeihinChou.setStyle("-fx-text-fill: #00796B");
+
+                            // hbox sẽ chứa tất cả các control
                             HBox hBox = new HBox();
                             hBox.setAlignment(Pos.CENTER_RIGHT);
                             hBox.setMaxWidth(Double.MAX_VALUE);
                             hBox.setStyle("-fx-font-weight: bold; -fx-background-color: #DCEDC8; -fx-padding: 3 3 3 3");
 
+                            // tạo luồng đọc file ảnh
                             Class<ConVertPdfToExcelCHLController> clazz = ConVertPdfToExcelCHLController.class;
                             InputStream input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/ok.png");
 
+                            // lấy tên vật liệu của file
                             String koSyuName = csvFile.getKouSyuName();
+                            // chọn ảnh dựa theo tên vật liệu
                             if (koSyuName.equalsIgnoreCase("[")) {
                                 input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/U.png");
                             } else if (koSyuName.equalsIgnoreCase("C")) {
@@ -711,20 +747,30 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                                 input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/CA.png");
                             }
 
+                            // control chứa ảnh
                             Image image;
 
                             try {
                                 assert input != null;
+                                // thêm luồng đọc ảnh vào control chứa ảnh
                                 image = new Image(input);
+                                // tạo ImageView chứa image để hiển thị ảnh
                                 ImageView imageView = new ImageView(image);
                                 imageView.setFitWidth(25);
                                 imageView.setFitHeight(25);
 
+                                // tạo vùng ngăn cách giữa 2 giá trị tổng chiều dài
+                                Label separation = new Label("|");
+
+                                // thêm các control vào hbox theo thứ tự xác định
                                 hBox.getChildren().add(labelName);
                                 hBox.getChildren().add(imageView);
                                 hBox.getChildren().add(labelSeihinChou);
+                                hBox.getChildren().add(separation);
                                 hBox.getChildren().add(labelKouzaiChou);
-                                hBox.setSpacing(10);
+//                                hBox.setSpacing(10);
+
+                                // gán hbox cho dòng của list view
                                 setGraphic(hBox);
                             } catch (NullPointerException e) {
                                 System.out.println(e.getMessage());
