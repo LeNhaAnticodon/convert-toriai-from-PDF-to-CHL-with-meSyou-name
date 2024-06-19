@@ -99,9 +99,9 @@ public class ReadPDFToExcel {
             Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
 //            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
-//            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
+            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin vào file định dạng sysc2 là file của chl
-            writeDataToChl(kaKouPairs, i, csvFileNames);
+//            writeDataToChl(kaKouPairs, i, csvFileNames);
         }
 
     }
@@ -339,6 +339,9 @@ public class ReadPDFToExcel {
 
         int rowIndex = 3;
 
+        // tổng chiều dài các kozai
+        int kouzaiChouGoukei = 0;
+        int seiHinChouGoukei = 0;
         // Ghi dữ liệu từ KA_KOU_PAIRS vào các ô
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> entry : kaKouPairs.entrySet()) {
             if (rowIndex >= 102) break;
@@ -354,6 +357,8 @@ public class ReadPDFToExcel {
 
                 keyTemp = String.valueOf(kouZaiEntry.getKey());
                 valueTemp = kouZaiEntry.getValue();
+                // cộng thêm chiều dài của bozai * số lượng vào tổng
+                kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
             }
 
             // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -361,11 +366,18 @@ public class ReadPDFToExcel {
                 int j = 0;
                 for (Map.Entry<StringBuilder[], Integer> meiSyouEntry : meiSyouPairs.entrySet()) {
                     if (rowIndex >= 102) break;
+                    // chiều dài sản phẩm
+                    String leng = String.valueOf(meiSyouEntry.getKey()[1]);
+                    // số lượng sản phẩm
+                    String num = meiSyouEntry.getValue().toString();
 
                     Row row = sheet.createRow(rowIndex++);
-                    row.createCell(0).setCellValue(String.valueOf(meiSyouEntry.getKey()[1]));
-                    row.createCell(1).setCellValue(meiSyouEntry.getValue());
+                    row.createCell(0).setCellValue(leng);
+                    row.createCell(1).setCellValue(num);
                     row.createCell(2).setCellValue(String.valueOf(meiSyouEntry.getKey()[0]));
+
+                    // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
+                    seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
                     j++;
                 }
                 sheet.getRow(rowIndex - j).createCell(3).setCellValue(keyTemp);
@@ -441,7 +453,9 @@ public class ReadPDFToExcel {
             System.out.println("File does not exist.");
         }
 
-        csvFileNames.add(new CsvFile(fileName, kouSyuName));
+        System.out.println("tong chieu dai bozai " + kouzaiChouGoukei);
+        System.out.println("tong chieu dai san pham " + seiHinChouGoukei);
+        csvFileNames.add(new CsvFile(fileName, kouSyuName, kouzaiChouGoukei, seiHinChouGoukei));
 
     }
 
@@ -490,7 +504,9 @@ public class ReadPDFToExcel {
         } else {
 //            System.out.println("File không tồn tại.");
         }
-
+        // tổng chiều dài các kozai
+        int kouzaiChouGoukei = 0;
+        int seiHinChouGoukei = 0;
         try (CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(csvPath), Charset.forName("MS932")))) {
 
 
@@ -521,6 +537,9 @@ public class ReadPDFToExcel {
 
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
                     valueTemp = kouZaiEntry.getValue();
+
+                    // cộng thêm chiều dài của bozai * số lượng vào tổng
+                    kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -531,10 +550,19 @@ public class ReadPDFToExcel {
 
                         String[] line = new String[4];
                         rowIndex++;
-                        line[0] = String.valueOf(meiSyouEntry.getKey()[1]);
-                        line[1] = meiSyouEntry.getValue().toString();
+
+                        // chiều dài sản phẩm
+                        String leng = String.valueOf(meiSyouEntry.getKey()[1]);
+                        // số lượng sản phẩm
+                        String num = meiSyouEntry.getValue().toString();
+                        // ghi chiều dài sản phẩm
+                        line[0] = leng;
+                        // ghi số lượng sản phẩm
+                        line[1] = num;
                         line[2] = String.valueOf(meiSyouEntry.getKey()[0]);
 
+                        // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
+                        seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
                         toriaiDatas.add(line);
                         j++;
                     }
@@ -587,7 +615,9 @@ public class ReadPDFToExcel {
 //            System.out.println("File does not exist.");
         }
 
-        csvFileNames.add(new CsvFile(fileName, kouSyuName));
+        System.out.println("tong chieu dai bozai " + kouzaiChouGoukei);
+        System.out.println("tong chieu dai san pham " + seiHinChouGoukei);
+        csvFileNames.add(new CsvFile(fileName, kouSyuName, kouzaiChouGoukei, seiHinChouGoukei));
 
     }
 
@@ -640,6 +670,9 @@ public class ReadPDFToExcel {
 //            System.out.println("File không tồn tại.");
         }
 
+        // tổng chiều dài các kozai
+        int kouzaiChouGoukei = 0;
+        int seiHinChouGoukei = 0;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
             writer.write(currentTime + "+" + timePlus + ",,,");
@@ -673,10 +706,13 @@ public class ReadPDFToExcel {
                 // số lượng bozai
                 int valueTemp = 0;
 
+
                 // Ghi dữ liệu bozai từ mapkey vào ô D4 kouZaiChouPairs
                 for (Map.Entry<StringBuilder, Integer> kouZaiEntry : kouZaiChouPairs.entrySet()) {
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
                     valueTemp = kouZaiEntry.getValue();
+                    // cộng thêm chiều dài của bozai * số lượng vào tổng
+                    kouzaiChouGoukei += Integer.parseInt(keyTemp) * valueTemp;
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -691,14 +727,22 @@ public class ReadPDFToExcel {
                         // chiều dài sản phẩm, số lượng sản phẩm, tên sản phẩm, chiều dài bozai
                         String[] line = new String[4];
                         rowIndex++;
+
+                        // chiều dài sản phẩm
+                        String leng = String.valueOf(meiSyouEntry.getKey()[1]);
+                        // số lượng sản phẩm
+                        String num = meiSyouEntry.getValue().toString();
                         // ghi chiều dài sản phẩm
-                        line[0] = String.valueOf(meiSyouEntry.getKey()[1]);
+                        line[0] = leng;
                         // ghi số lượng sản phẩm
-                        line[1] = meiSyouEntry.getValue().toString();
+                        line[1] = num;
                         // ghi tên sản phẩm
                         line[2] = String.valueOf(meiSyouEntry.getKey()[0]);
                         // ghi vào phần tử thứ 3 của mảng giá trị rỗng để tránh giá trị null
                         line[3] = "";
+
+                        // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
+                        seiHinChouGoukei += Integer.parseInt(leng) * Integer.parseInt(num);
 
                         // thêm hàng sản phẩm vừa tạo vào list
                         toriaiDatas.add(line);
@@ -797,8 +841,10 @@ public class ReadPDFToExcel {
 //            System.out.println("File does not exist.");
         }
 
+        System.out.println("tong chieu dai bozai " + kouzaiChouGoukei);
+        System.out.println("tong chieu dai san pham " + seiHinChouGoukei);
         // thêm file vào list hiển thị
-        csvFileNames.add(new CsvFile(fileName, kouSyuName));
+        csvFileNames.add(new CsvFile(fileName, kouSyuName, kouzaiChouGoukei, seiHinChouGoukei));
 
     }
 

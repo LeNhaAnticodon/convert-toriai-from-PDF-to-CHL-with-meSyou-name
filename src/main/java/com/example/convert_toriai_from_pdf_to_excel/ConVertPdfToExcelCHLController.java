@@ -672,14 +672,22 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                         super.updateItem(csvFile, empty);
 
                         if (csvFile != null && !empty) {
-                            Label label = new Label(csvFile.getName());
-//                            label.setMaxWidth(Double.MAX_VALUE);
-                            label.setAlignment(Pos.CENTER);
-//                            label.setStyle("-fx-font-weight: bold; -fx-background-color: #DCEDC8; -fx-padding: 3 3 3 3");
-                            label.setTextFill(Color.BLUE);
+                            Label labelName = new Label(csvFile.getName());
+//                            labelName.setMaxWidth(Double.MAX_VALUE);
+                            labelName.setAlignment(Pos.CENTER);
+                            labelName.setStyle("-fx-background-color: blue;");
+                            labelName.setTextFill(Color.BLUE);
+
+                            Label labelKouzaiChou = new Label(csvFile.getKouzaiChouGoukei() + "");
+                            labelKouzaiChou.setMaxWidth(USE_PREF_SIZE);
+                            labelKouzaiChou.setStyle("-fx-background-color: green");
+
+                            Label labelSeihinChou = new Label(((double)csvFile.getSeiHinChouGoukei()) / 100 + "");
+                            labelSeihinChou.setMaxWidth(USE_PREF_SIZE);
+                            labelSeihinChou.setStyle("-fx-background-color: red");
 
                             HBox hBox = new HBox();
-                            hBox.setAlignment(Pos.CENTER);
+                            hBox.setAlignment(Pos.CENTER_RIGHT);
                             hBox.setMaxWidth(Double.MAX_VALUE);
                             hBox.setStyle("-fx-font-weight: bold; -fx-background-color: #DCEDC8; -fx-padding: 3 3 3 3");
 
@@ -712,8 +720,10 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                                 imageView.setFitWidth(25);
                                 imageView.setFitHeight(25);
 
-                                hBox.getChildren().add(label);
+                                hBox.getChildren().add(labelName);
                                 hBox.getChildren().add(imageView);
+                                hBox.getChildren().add(labelSeihinChou);
+                                hBox.getChildren().add(labelKouzaiChou);
                                 hBox.setSpacing(10);
                                 setGraphic(hBox);
                             } catch (NullPointerException e) {
