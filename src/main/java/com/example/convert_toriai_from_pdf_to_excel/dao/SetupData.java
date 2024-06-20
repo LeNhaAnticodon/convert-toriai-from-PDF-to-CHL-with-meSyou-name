@@ -14,15 +14,24 @@ import java.util.Map;
 
 public class SetupData {
     private static SetupData instance;
-    private static final String FILE_SETUP_NAME = "setup_data.set";
+    private static String FILE_SETUP_NAME = "setup_data.set";
     private final ObservableList<CsvFile> csvFiles = FXCollections.observableArrayList();
     private final Map<String, String> languageMap = new HashMap<>();
     private final Setup setup = new Setup();
-    private final Path path = Paths.get(FILE_SETUP_NAME);
+    private Path pathFile = Paths.get(FILE_SETUP_NAME);
 
+    // lấy địa chỉ app data theo user người dùng và thêm vào thư mục Convert PDF to CHL
+    // ví dụ: C:\Users\HuanTech PC\AppData\Roaming\convert pdf to chl
+    private static final String appDataPath = System.getenv("APPDATA");
+    private static final Path myAppPath = Paths.get(appDataPath, "Convert PDF to CHL");
     private final ObservableList<Object> controls = FXCollections.observableArrayList();
 
     private SetupData() {
+        FILE_SETUP_NAME = myAppPath.toAbsolutePath() + "\\setup_data.set";
+        pathFile = Paths.get(FILE_SETUP_NAME);
+
+        createDirAndFile();
+
         languageMap.put("Chọn file cần chuyển", "Select_the_file_to_transfer");
         languageMap.put("Chọn thư mục lưu file", "Select_the_folder_to_save_the_file");
         languageMap.put("THỰC HIỆN CHUYỂN FILE", "IMPLEMENT_FILE_TRANSFER");
@@ -67,7 +76,6 @@ public class SetupData {
         languageMap.put("Vật liệu(m)", "Base_material");
 
 
-
         languageMap.put("転送するファイルを選択します", "Select_the_file_to_transfer");
         languageMap.put("ファイルを保存するフォルダーを選択します", "Select_the_folder_to_save_the_file");
         languageMap.put("ファイル転送を実行します", "IMPLEMENT_FILE_TRANSFER");
@@ -110,7 +118,6 @@ public class SetupData {
         languageMap.put("CHLファイル名", "CHL_file_name");
         languageMap.put("総製品(m)", "Product");
         languageMap.put("総鋼材(m)", "Base_material");
-
 
 
         languageMap.put("Select the file to transfer", "Select_the_file_to_transfer");
@@ -174,7 +181,7 @@ public class SetupData {
         return setup;
     }
 
-    public void setLinkPdfFile(String linkPdfFile){
+    public void setLinkPdfFile(String linkPdfFile) {
         setup.setLinkPdfFile(linkPdfFile);
         try {
             saveSetup();
@@ -206,9 +213,12 @@ public class SetupData {
     }
 
     public void loadSetup() throws IOException {
-        if (Files.notExists(path)) {
+        // Tạo thư mục và file nếu nó không tồn tại
+        createDirAndFile();
+        // đoạn code này có thể không cần vì đã thay bằng đoạn trên
+        if (Files.notExists(pathFile)) {
             try {
-                Files.createFile(path);
+                Files.createFile(pathFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -216,9 +226,9 @@ public class SetupData {
             return;
         }
 
-        try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(path)))) {
+        try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(pathFile)))) {
             boolean eof = false;
-            while(!eof) {
+            while (!eof) {
                 try {
 
                     String linkPdfFile = dis.readUTF();
@@ -234,7 +244,7 @@ public class SetupData {
                     setup.setLang(lang);
                     System.out.println(":" + setup.getLang());
 
-                } catch(EOFException e) {
+                } catch (EOFException e) {
                     eof = true;
                 }
             }
@@ -242,9 +252,8 @@ public class SetupData {
     }
 
     public void saveSetup() throws IOException {
-//        if (Files.notExists(path)) {
-//            Files.createFile(path);
-//        }
+        // Tạo thư mục và file nếu nó không tồn tại
+        createDirAndFile();
 
         // Tạo đối tượng File đại diện cho file cần xóa
         File file = new File(FILE_SETUP_NAME);
@@ -260,10 +269,10 @@ public class SetupData {
         } else {
             System.out.println("File data không tồn tại.");
         }
-        try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(path)))) {
-                dos.writeUTF(setup.getLinkPdfFile());
-                dos.writeUTF(setup.getLinkSaveCvsFileDir());
-                dos.writeUTF(setup.getLang());
+        try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(pathFile)))) {
+            dos.writeUTF(setup.getLinkPdfFile());
+            dos.writeUTF(setup.getLinkSaveCvsFileDir());
+            dos.writeUTF(setup.getLang());
         }
 
         // Đặt quyền chỉ đọc cho file, để không chỉnh sửa file
@@ -278,6 +287,24 @@ public class SetupData {
         } else {
             System.out.println("File data does not exist.");
         }
+    }
+
+    private void createDirAndFile() {
+        try {
+            // Tạo thư mục và file nếu nó không tồn tại
+            if (Files.notExists(myAppPath)) {
+                Files.createDirectory(myAppPath);
+                if (Files.notExists(pathFile)) {
+                    Files.createFile(pathFile);
+                    System.out.println(pathFile);
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
 
