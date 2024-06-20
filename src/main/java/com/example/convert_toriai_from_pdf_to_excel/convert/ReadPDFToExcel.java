@@ -99,9 +99,9 @@ public class ReadPDFToExcel {
             Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
 //            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
-            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
+//            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin vào file định dạng sysc2 là file của chl
-//            writeDataToChl(kaKouPairs, i, csvFileNames);
+            writeDataToChl(kaKouPairs, i, csvFileNames);
         }
 
     }

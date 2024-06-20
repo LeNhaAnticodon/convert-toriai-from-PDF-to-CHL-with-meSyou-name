@@ -7,7 +7,11 @@
     <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="them tong chieu dai">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setup_data.set" beforeDir="false" afterPath="$PROJECT_DIR$/setup_data.set" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/convert/ReadPDFToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/convert/ReadPDFToExcel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/dao/SetupData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/dao/SetupData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/convertPdfToExcelCHL.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/convertPdfToExcelCHL.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/languagesMap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/languagesMap.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +136,8 @@
       <workItem from="1718763250780" duration="272000" />
       <workItem from="1718765086559" duration="8093000" />
       <workItem from="1718781343616" duration="11837000" />
-      <workItem from="1718793906955" duration="2744000" />
+      <workItem from="1718793906955" duration="2984000" />
+      <workItem from="1718848880169" duration="2358000" />
     </task>
     <task id="LOCAL-00001" summary="them tong chieu dai">
       <created>1718771054905</created>
@@ -148,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718794056212</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="them tong chieu dai">
+      <created>1718796803676</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718796803676</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,52 +198,52 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>397</line>
+          <line>404</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>398</line>
+          <line>405</line>
           <option name="timeStamp" value="77" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>399</line>
+          <line>406</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>400</line>
+          <line>407</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>395</line>
+          <line>402</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>393</line>
+          <line>400</line>
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>390</line>
+          <line>397</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>389</line>
+          <line>396</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>388</line>
+          <line>395</line>
           <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
-          <line>387</line>
+          <line>394</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
       </breakpoints>

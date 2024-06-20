@@ -59,9 +59,12 @@ public class SetupData {
         languageMap.put("Thực hiện: Lê Nhã", "copyright");
         languageMap.put("Tên file CHL đang tạo: (\"\") trùng tên với 1 file CHL khác đang được mở nên không thể ghi đè", "Name_of_the_CHL");
         languageMap.put("Hãy đóng file CHL đang mở để tiếp tục!", "Please_close_the_open_CHL_file_to_continue");
-
         languageMap.put("File CHL đang tạo: (\"\") có số dòng sản phẩm cần ghi lớn hơn 99 nên không thể ghi", "CHL_file_being_created");
         languageMap.put("Hãy chỉnh sửa lại dữ liệu vật liệu đang chuyển để tiếp tục!", "Please_edit_the_transferring_material_data_to_continue");
+
+        languageMap.put("Tên file CHL", "CHL_file_name");
+        languageMap.put("Sản phẩm(m)", "Product");
+        languageMap.put("Vật liệu(m)", "Base_material");
 
 
 
@@ -101,9 +104,12 @@ public class SetupData {
         languageMap.put("作者: ル・ニャ", "copyright");
         languageMap.put("作成されているCHLファイルの名前: (\"\") は開いている別の CHL ファイルと同じ名前なので、上書きできません。", "Name_of_the_CHL");
         languageMap.put("続行するには、この開いている CHL ファイルを閉じてください。", "Please_close_the_open_CHL_file_to_continue");
-
         languageMap.put("CHL ファイルを作成中: (\"\") の製品ライン番号が 99 より大きいため、記録できません。", "CHL_file_being_created");
         languageMap.put("続行するには、転送中の鋼種データを編集してください。", "Please_edit_the_transferring_material_data_to_continue");
+
+        languageMap.put("CHLファイル名", "CHL_file_name");
+        languageMap.put("総製品(m)", "Product");
+        languageMap.put("総鋼材(m)", "Base_material");
 
 
 
@@ -143,9 +149,12 @@ public class SetupData {
         languageMap.put("copyright ©: Le Nha", "copyright");
         languageMap.put("Name of the CHL file being created: (\"\") has the same name as another CHL file that is currently open, so it cannot be overwritten", "Name_of_the_CHL");
         languageMap.put("Please close the open CHL file to continue!", "Please_close_the_open_CHL_file_to_continue");
-
         languageMap.put("CHL file being created: (\"\") has a product line number greater than 99, so it cannot be recorded", "CHL_file_being_created");
         languageMap.put("Please edit the transferring material data to continue!", "Please_edit_the_transferring_material_data_to_continue");
+
+        languageMap.put("CHL file name", "CHL_file_name");
+        languageMap.put("Product(m)", "Product");
+        languageMap.put("Material(m)", "Base_material");
     }
 
     public static SetupData getInstance() {

@@ -88,6 +88,12 @@ public class ConVertPdfToExcelCHLController implements Initializable {
     public Label copyLinkStatusLabel;
     @FXML
     public Button copyLinkBtn;
+    @FXML
+    public Label fileName;
+    @FXML
+    public Label product;
+    @FXML
+    public Label baseMaterial;
 
     private Map<String, String> languageMap;
 
@@ -134,7 +140,8 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
         languageMap = SetupData.getInstance().getLanguageMap();
         controls = SetupData.getInstance().getControls();
-        controls.addAll(getPdfFileBtn, setSaveCsvFileDirBtn, convertFileBtn, openDirCsvBtn, listCsvFileTitle, menuBar, copyLinkStatusLabel, copyLinkBtn);
+        controls.addAll(getPdfFileBtn, setSaveCsvFileDirBtn, convertFileBtn, openDirCsvBtn, listCsvFileTitle, menuBar, copyLinkStatusLabel, copyLinkBtn,
+                fileName, product, baseMaterial);
 
         // Load the resource bundle
         bundle = ResourceBundle.getBundle("languagesMap");
