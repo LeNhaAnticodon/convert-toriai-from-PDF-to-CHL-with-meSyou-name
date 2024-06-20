@@ -1,4 +1,4 @@
-package com.example.convert_toriai_from_pdf_to_excel.model;
+package com.example.convert_toriai_from_pdf_to_chl.model;
 
 public class CsvFile {
     private String name;

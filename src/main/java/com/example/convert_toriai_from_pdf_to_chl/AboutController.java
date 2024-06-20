@@ -1,4 +1,4 @@
-package com.example.convert_toriai_from_pdf_to_excel;
+package com.example.convert_toriai_from_pdf_to_chl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

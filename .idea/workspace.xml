@@ -4,10 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="them tong chieu dai">
+    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="sua vi tri lu file setup">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/LOGO_CHL.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/LOGO_CHL.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup_data.set" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/dao/SetupData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/dao/SetupData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/AboutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/AboutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/convert/ReadPDFToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/dao/SetupData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/dao/SetupData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/model/CsvFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/model/CsvFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/model/Setup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/model/Setup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/3d WorkingPeople ConstructionWorker.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/3d WorkingPeople ConstructionWorker.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/C.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/C.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/CA.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/CA.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/FB.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/FB.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/H.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/H.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/H2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/H2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/L.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/L.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/L2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/L2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/P.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/P.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/P2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/P2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/U.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/U.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/UC.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/UC.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON/ok.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/ok.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/about.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/about.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/convertPdfToExcelCHL.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/convertPdfToExcelCHL.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +71,7 @@
     "extract.method.default.visibility": "private",
     "jdk.selected.JAVA_MODULE": "17",
     "last_directory_selection": "C:/Users/HuanTech PC/IdeaProjects/convert toriai from PDF to EXCEL/src/main/java/com/example/convert_toriai_from_pdf_to_excel",
-    "last_opened_file_path": "C:/Users/HuanTech PC/IdeaProjects/convert toriai from PDF to EXCEL/src/main",
+    "last_opened_file_path": "C:/Users/HuanTech PC/IdeaProjects/convert toriai from pdf to chl add meisyou/src/main/resources/com/example/convert_toriai_from_pdf_to_excel/ICON",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,16 +86,17 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\HuanTech PC\IdeaProjects\convert toriai from pdf to chl add meisyou\src\main\resources\com\example\convert_toriai_from_pdf_to_excel\ICON" />
       <recent name="C:\Users\HuanTech PC\IdeaProjects\convert toriai from PDF to EXCEL\src\main" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="MainApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.example.convert_toriai_from_pdf_to_excel.MainApplication" />
+      <option name="MAIN_CLASS_NAME" value="com.example.convert_toriai_from_pdf_to_chl.MainApplication" />
       <module name="convert_toriai_from_PDF_to_EXCEL" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.convert_toriai_from_pdf_to_excel.*" />
+          <option name="PATTERN" value="com.example.convert_toriai_from_pdf_to_chl.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -137,7 +164,8 @@
       <workItem from="1718848880169" duration="3329000" />
       <workItem from="1718852271579" duration="21000" />
       <workItem from="1718852323896" duration="729000" />
-      <workItem from="1718870471057" duration="2081000" />
+      <workItem from="1718870471057" duration="2442000" />
+      <workItem from="1718872959283" duration="2684000" />
     </task>
     <task id="LOCAL-00001" summary="them tong chieu dai">
       <created>1718771054905</created>
@@ -167,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718851552188</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="sua vi tri lu file setup">
+      <created>1718872863163</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1718872863164</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -198,58 +233,59 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="them tong chieu dai" />
-    <option name="LAST_COMMIT_MESSAGE" value="them tong chieu dai" />
+    <MESSAGE value="sua vi tri lu file setup" />
+    <option name="LAST_COMMIT_MESSAGE" value="sua vi tri lu file setup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>404</line>
           <option name="timeStamp" value="76" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>405</line>
           <option name="timeStamp" value="77" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>406</line>
           <option name="timeStamp" value="78" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>407</line>
           <option name="timeStamp" value="79" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>402</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>400</line>
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>397</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>396</line>
           <option name="timeStamp" value="91" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>395</line>
           <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_excel/ConVertPdfToExcelCHLController.java</url>
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java</url>
           <line>394</line>
           <option name="timeStamp" value="93" />
         </line-breakpoint>

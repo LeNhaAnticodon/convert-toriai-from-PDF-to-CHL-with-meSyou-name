@@ -1,8 +1,8 @@
-package com.example.convert_toriai_from_pdf_to_excel;
+package com.example.convert_toriai_from_pdf_to_chl;
 
-import com.example.convert_toriai_from_pdf_to_excel.convert.ReadPDFToExcel;
-import com.example.convert_toriai_from_pdf_to_excel.dao.SetupData;
-import com.example.convert_toriai_from_pdf_to_excel.model.CsvFile;
+import com.example.convert_toriai_from_pdf_to_chl.convert.ReadPDFToExcel;
+import com.example.convert_toriai_from_pdf_to_chl.dao.SetupData;
+import com.example.convert_toriai_from_pdf_to_chl.model.CsvFile;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -733,25 +733,25 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
                             // tạo luồng đọc file ảnh
                             Class<ConVertPdfToExcelCHLController> clazz = ConVertPdfToExcelCHLController.class;
-                            InputStream input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/ok.png");
+                            InputStream input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/ok.png");
 
                             // lấy tên vật liệu của file
                             String koSyuName = csvFile.getKouSyuName();
                             // chọn ảnh dựa theo tên vật liệu
                             if (koSyuName.equalsIgnoreCase("[")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/U.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/U.png");
                             } else if (koSyuName.equalsIgnoreCase("C")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/C.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/C.png");
                             } else if (koSyuName.equalsIgnoreCase("K")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/P.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/P.png");
                             } else if (koSyuName.equalsIgnoreCase("L")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/L.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/L.png");
                             } else if (koSyuName.equalsIgnoreCase("H")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/H.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/H.png");
                             } else if (koSyuName.equalsIgnoreCase("FB")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/FB.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/FB.png");
                             } else if (koSyuName.equalsIgnoreCase("CA")) {
-                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_excel/ICON/CA.png");
+                                input = clazz.getResourceAsStream("/com/example/convert_toriai_from_pdf_to_chl/ICON/CA.png");
                             }
 
                             // control chứa ảnh
@@ -809,7 +809,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
         dialog.setResizable(true);
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(ConVertPdfToExcelCHLController.class.getResource("/com/example/convert_toriai_from_pdf_to_excel/about.fxml"));// thêm ui fxml
+        loader.setLocation(ConVertPdfToExcelCHLController.class.getResource("/com/example/convert_toriai_from_pdf_to_chl/about.fxml"));// thêm ui fxml
 
         try {
             dialog.getDialogPane().setContent(loader.load());// liên kết ui fxml vào dialog
