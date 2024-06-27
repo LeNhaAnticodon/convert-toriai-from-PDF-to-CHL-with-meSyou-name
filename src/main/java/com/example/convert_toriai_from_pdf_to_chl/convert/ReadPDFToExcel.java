@@ -352,6 +352,8 @@ public class ReadPDFToExcel {
         if (rowToriAiNum > 99) {
             rowToriAiNum = 99;
             System.out.println("vượt quá 99 hàng");
+            // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2 để in ra thông báo
+            fileName = fileChlName + " " + kouSyu + ".sysc2";
             throw new TimeoutException();
         }
 

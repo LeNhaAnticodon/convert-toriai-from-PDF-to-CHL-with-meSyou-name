@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="them anh cho header cua stage">
+    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="them fomat so thuc">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/LOGO_CHL.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/convert_toriai_from_pdf_to_chl/ICON/LOGO_CHL.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +147,8 @@
       <workItem from="1719385681827" duration="1084000" />
       <workItem from="1719452813307" duration="3560000" />
       <workItem from="1719459009454" duration="933000" />
-      <workItem from="1719468470841" duration="1841000" />
+      <workItem from="1719468470841" duration="1991000" />
+      <workItem from="1719470771291" duration="1124000" />
     </task>
     <task id="LOCAL-00001" summary="them tong chieu dai">
       <created>1718771054905</created>
@@ -193,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1718876127744</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="them fomat so thuc">
+      <created>1719470479794</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1719470479794</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -226,7 +232,8 @@
     <MESSAGE value="them tong chieu dai" />
     <MESSAGE value="sua vi tri lu file setup" />
     <MESSAGE value="them anh cho header cua stage" />
-    <option name="LAST_COMMIT_MESSAGE" value="them anh cho header cua stage" />
+    <MESSAGE value="them fomat so thuc" />
+    <option name="LAST_COMMIT_MESSAGE" value="them fomat so thuc" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
