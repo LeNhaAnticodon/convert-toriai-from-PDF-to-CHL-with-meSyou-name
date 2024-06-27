@@ -13,56 +13,87 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class ReadPDFToExcel {
 
+    // time tháng và ngày
     private static String shortNouKi = "";
+    // 備考
     private static String kouJiMe = "";
+    // 客先名
     private static String kyakuSakiMei = "";
+    // 3 kích thước của vật liệu
     private static int size1;
     private static int size2;
     private static int size3 = 0;
+    // ký hiệu loại vật lệu
     private static String koSyuNumMark = "3";
+    // 切りロス
     private static String kirirosu = "";
 
+    // tên file chl sẽ tạo được ghi trong phần 工事名, chưa bao gồm loại vật liệu
     private static String fileChlName = "";
 
+    // link của file pdf
     private static String pdfPath = "";
 
+    // link thư mục của file excel xlsx sẽ tạo
     private static String xlsxExcelPath = "";
+    // link thư mục của file excel csv sẽ tạo
     private static String csvExcelDirPath = "";
+    // link thư mục của file chl sẽ tạo
     private static String chlDirPath = "";
+    // đếm số dòng sẽ tạo trên file chl
     private static int rowToriAiNum;
 
+    // loại vật liệu và kích thước
     private static String kouSyu;
 
+    // tên loại vật liệu
     private static String kouSyuName;
+    // tên file chl đầy đủ sẽ tạo đã bao gồm tên loại vật liệu
     public static String fileName;
 
+    /**
+     * chuyển đổi pdf tính vật liệu thành các file chl theo từng vật liệu khác nhau
+     * @param filePDFPath link file pdf
+     * @param fileChlDirPath link thư mục chứa file chl sẽ tạo
+     * @param csvFileNames list chứa danh sách các file chl đã tạo
+     */
     public static void convertPDFToExcel(String filePDFPath, String fileChlDirPath, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException, TimeoutException, IOException {
+        // xóa danh sách cũ trước khi thực hiện, tránh bị ghi chồng lên nhau
         csvFileNames.clear();
 
+        // lấy địa chỉ file pdf
         pdfPath = filePDFPath;
+        // lấy đi chỉ thư mục chứa file excel
 //        csvExcelDirPath = fileCSVDirPath;
+        // lấy đi chỉ thư mục chứa file excel csv
         csvExcelDirPath = fileChlDirPath;
-
+        // lấy đi chỉ thư mục chứa chl
         chlDirPath = fileChlDirPath;
 
+        // lấy mảng chứa các trang
         String[] kakuKouSyu = getFullToriaiText();
-        // lấy trang đầu tiên và lấy các thông tin của đơn như tên khách hàng, ngày tháng
+        // lấy trang đầu tiên và lấy ra các thông tin của đơn như tên khách hàng, ngày tháng
         getHeaderData(kakuKouSyu[0]);
 
         // chuyển mảng các trang sang dạng list
         List<String> kakuKouSyuList = new LinkedList<>(Arrays.asList(kakuKouSyu));
-        int kakuKouSyuListSize = kakuKouSyuList.size();
 
+        // kích thước list
+        int kakuKouSyuListSize = kakuKouSyuList.size();
         // lặp qua các trang gộp các trang cùng loại vật liệu làm 1 và xóa các trang đã được gộp vào trang khác đi
         for (int i = 1; i < kakuKouSyuListSize; i++) {
+            // lấy tên vật liệu đang lặp
             String KouSyuName = extractValue(kakuKouSyuList.get(i), "法:", "梱包");
 
+            // duyệt các trang phía sau, nếu vật liệu giống trang đang lặp thì gộp trang đó vào trang này
+            // và xóa trang đó đi
             for (int j = i + 1; j < kakuKouSyuListSize; j++) {
                 String KouSyuNameAfter = extractValue(kakuKouSyuList.get(j), "法:", "梱包");
                 if (KouSyuName.equals(KouSyuNameAfter)) {
@@ -85,7 +116,7 @@ public class ReadPDFToExcel {
             }*/
         }
 
-        // lặp qua từng loại vật liệu và ghi chúng vào các file chl
+        // lặp qua từng loại vật liệu trong list và ghi chúng vào các file chl
         for (int i = 1; i < kakuKouSyuList.size(); i++) {
             // tách các đoạn bozai thành mảng
             String[] kakuKakou = kakuKouSyuList.get(i).split("加工No:");
@@ -95,7 +126,7 @@ public class ReadPDFToExcel {
             getKouSyu(kakuKakou);
             // tạo map kaKouPairs và nhập thông tin tính vật liệu vào
             // kaKouPairs là map chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
-            // còn value của kaKouPairs cũng là map chứa các cặp key là chiều dài sản phẩm, value là số lượng sản phẩm
+            // còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
             Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
 
 //            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
@@ -106,9 +137,16 @@ public class ReadPDFToExcel {
 
     }
 
+    /**
+     * lấy toàn bộ text của file pdf
+     * @return mảng chứa các trang của file pdf, đầu trang chứa tên vật liệu
+     */
     private static String[] getFullToriaiText() throws IOException {
+        // khởi tạo mảng, có thể ko cần nếu sau đó nó có thể được gán bằng mảng khác
         String[] kakuKouSyu = new String[0];
+        // dùng thư viện đọc file pdf lấy toàn bộ text của file
         try (PDDocument document = PDDocument.load(new File(pdfPath))) {
+            // nếu file không được mã hóa thì mới lấy được text
             if (!document.isEncrypted()) {
                 PDFTextStripper pdfStripper = new PDFTextStripper();
                 String toriaiText = pdfStripper.getText(document);
@@ -124,8 +162,12 @@ public class ReadPDFToExcel {
         return kakuKouSyu;
     }
 
+    /**
+     * lấy các thông tin của đơn và ghi vào các biến nhớ toàn cục
+     * các thông tin nă trong vùng xác định, dùng hàm extractValue để lấy
+     * @param header text chứa thông tin
+     */
     private static void getHeaderData(String header) {
-
         String nouKi = extractValue(header, "期[", "]");
         String[] nouKiArr = nouKi.split("/");
         shortNouKi = nouKiArr[1] + "/" + nouKiArr[2];
@@ -137,12 +179,21 @@ public class ReadPDFToExcel {
         System.out.println(shortNouKi + " : " + kouJiMe + " : " + kyakuSakiMei);
     }
 
+    /**
+     * lấy thông số đầy đủ của vật liệu, tên vật liệu, mã vật liệu, 3 size của vật liệu và ghi vào biến toàn cục
+     * @param kakuKakou mảng chứa các tính vật liệu của vật liệu đang xét
+     */
     private static void getKouSyu(String[] kakuKakou) {
 
+        // lấy loại vật liệu tại mảng 0 và tách mảng 0 thành các dòng rồi lấu dòng đầu tiên
+        // tại dòng này lấy loại vật liệu trong đoạn "法:", "梱包"
         kouSyu = extractValue(kakuKakou[0].split("\n")[0], "法:", "梱包");
+        // phân tách vật liệu thành các đoạn thông tin
         String[] kouSyuNameAndSize = kouSyu.split("-");
+        // lấy tên vật liệu tại index 0
         kouSyuName = kouSyuNameAndSize[0].trim();
 
+        // từ tên vật liệu lấy ra được  số đại diện cho nó
         switch (kouSyuName) {
             case "K":
                 koSyuNumMark = "3";
@@ -167,12 +218,15 @@ public class ReadPDFToExcel {
                 break;
         }
 
+        // lấy đoạn thông tin 2 chứa các size của vật liệu và phân tách nó thành mảng chứa các size này
         String[] koSyuSizeArr = kouSyuNameAndSize[1].split("x");
 
         size1 = 0;
         size2 = 0;
         size3 = 0;
 
+        // với từng loại vật liệu có số lượng size khác nhau thì sẽ ghi khác nhau, do chỉ cần thông tin của 3 size và x10
+        // size thừa sẽ không cần ghi
         if (koSyuSizeArr.length == 3) {
             size1 = convertStringToIntAndMul(koSyuSizeArr[1], 10);
             size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
@@ -187,11 +241,19 @@ public class ReadPDFToExcel {
         }
     }
 
+    /**
+     * phân tích tính vật liệu của vật liệu đang xét và gán vào map thông tin
+     * @param kakuKakou mảng chứa các tính vật liệu của vật liệu đang xét
+     * @return map các đoạn tính vật liệu chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
+     *  còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
+     */
     private static Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> getToriaiData(String[] kakuKakou) throws TimeoutException {
         rowToriAiNum = 0;
 
+        // tạo map
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = new LinkedHashMap<>();
 
+        // nếu không có thông tin thì thoát
         if (kakuKakou == null) {
             return kaKouPairs;
         }
@@ -221,7 +283,9 @@ public class ReadPDFToExcel {
                 if (line.contains("鋼材長:") && line.contains("本数:")) {
                     String kouZaiChou = extractValue(line, "鋼材長:", "mm");
                     String honSuu = extractValue(line, "本数:", " ").split(" ")[0];
-                    kouZaiChouPairs.put(new StringBuilder().append(convertStringToIntAndMul(kouZaiChou, 1)), convertStringToIntAndMul(honSuu, 1));
+                    // mẫu định dạng "#.##". Mẫu này chỉ hiển thị phần thập phân nếu có, và tối đa là 2 chữ số thập phân.
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    kouZaiChouPairs.put(new StringBuilder().append(df.format(Double.parseDouble(kouZaiChou))), convertStringToIntAndMul(honSuu, 1));
                 }
 
                 // nếu dòng chứa 名称 thì là dòng sản phẩm
@@ -621,6 +685,12 @@ public class ReadPDFToExcel {
 
     }
 
+    /**
+     * ghi tính vật liệu của vật liệu đang xét trong map vào file mới
+     * @param kaKouPairs map chứa tính vật liệu
+     * @param timePlus thời gian hoặc chỉ số cộng thêm vào ô time để tránh bị trùng tên  time giữa các file
+     * @param csvFileNames list chứa danh sách các file đã tạo
+     */
     private static void writeDataToChl(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
@@ -805,7 +875,7 @@ public class ReadPDFToExcel {
             // Ghi giá trị 0 vào dòng tiếp theo là dòng 103
             writer.write("0,0,0,0");
             writer.newLine();
-            // ghi 20 vaf kirirosu vào dòng tiếp
+            // ghi 20 và kirirosu vào dòng tiếp
             writer.write("20.0," + kirirosu + ",,");
             writer.newLine();
             // ghi các tên và ngày vào dòng tiếp
@@ -848,13 +918,31 @@ public class ReadPDFToExcel {
 
     }
 
+    /**
+     * trả về đoạn text nằm giữa startDelimiter và endDelimiter
+     * @param text đoạn văn bản chứa thông tin tìm kiếm
+     * @param startDelimiter đoạn text phía trước vùng cần tìm
+     * @param endDelimiter đoạn text phía sau vùng cần tìm
+     * @return đoạn text nằm giữa startDelimiter và endDelimiter
+     */
     private static String extractValue(String text, String startDelimiter, String endDelimiter) {
+        // lấy index của startDelimiter + độ dài của nó để bỏ qua nó và xác định được index bắt đầu của đoạn text nó bao ngoài, chính là đoạn text cần tìm
         int startIndex = text.indexOf(startDelimiter) + startDelimiter.length();
+        // lấy index của endDelimiter bắt đầu tìm từ index của startDelimiter để tránh tìm kiếm trong các vùng khác phía trước không liên quan, đây chính là
+        // index cuối cùng của đoạn text cần tìm
         int endIndex = text.indexOf(endDelimiter, startIndex);
+//        System.out.println(text);
+        // trả về đoạn text cần tìm bằng 2 index vừa xác định ở trên
         return text.substring(startIndex, endIndex).trim();
     }
 
 
+    /**
+     *
+     * @param textNum
+     * @param multiplier
+     * @return
+     */
     private static int convertStringToIntAndMul(String textNum, int multiplier) {
         Double num = null;
         try {

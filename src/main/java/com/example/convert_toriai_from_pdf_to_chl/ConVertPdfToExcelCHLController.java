@@ -409,6 +409,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 return;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                e.printStackTrace();
                 confirmAlert.getButtonTypes().clear();
                 confirmAlert.setAlertType(Alert.AlertType.ERROR);
                 confirmAlert.getButtonTypes().add(ButtonType.CANCEL);
