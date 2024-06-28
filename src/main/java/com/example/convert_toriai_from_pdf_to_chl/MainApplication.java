@@ -23,9 +23,9 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("CHUYỂN ĐỔI FILE PDF TÍNH TOÁN VẬT LIỆU SANG CHL");
         stage.setScene(scene);
-
-
         stage.show();
+        // lấy controller của FXMLLoader và gọi hàm getControls rồi thêm chính stage này vào list để hàm khởi tạo của
+        // controller gọi hàm set language cho các control sẽ set ngôn ngữ cho chính title của stage này
         ((ConVertPdfToExcelCHLController) fxmlLoader.getController()).getControls().add(stage);
     }
 
@@ -33,6 +33,7 @@ public class MainApplication extends Application {
     public void init() throws Exception {
         super.init();
         try {
+            // đọc dữ liệu cài đặt từ file
             SetupData.getInstance().loadSetup();
         } catch (IOException e) {
             System.out.println("không đọc được file");

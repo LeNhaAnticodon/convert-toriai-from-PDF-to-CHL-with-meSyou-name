@@ -164,7 +164,7 @@ public class ReadPDFToExcel {
 
     /**
      * lấy các thông tin của đơn và ghi vào các biến nhớ toàn cục
-     * các thông tin nă trong vùng xác định, dùng hàm extractValue để lấy
+     * các thông tin nằm trong vùng xác định, dùng hàm extractValue để lấy
      * @param header text chứa thông tin
      */
     private static void getHeaderData(String header) {
@@ -940,10 +940,10 @@ public class ReadPDFToExcel {
 
 
     /**
-     *
-     * @param textNum
-     * @param multiplier
-     * @return
+     * chuyển đổi text nhập vào sang số double rồi nhân với hệ số và trả về với kiểu int
+     * @param textNum text cần chuyển
+     * @param multiplier hệ số
+     * @return số int đã nhân với hệ số
      */
     private static int convertStringToIntAndMul(String textNum, int multiplier) {
         Double num = null;

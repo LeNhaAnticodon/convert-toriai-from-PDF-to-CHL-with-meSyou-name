@@ -13,25 +13,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SetupData {
+    // biến thể hiện duy nhất của class
     private static SetupData instance;
+    // tên file lưu cài đặt của chương trình
     private static String FILE_SETUP_NAME = "setup_data.set";
+    // list các file đã chuyển sang chl
     private final ObservableList<CsvFile> csvFiles = FXCollections.observableArrayList();
+    // map chứa key là text của các ngôn ngữ và value là từ khóa của câu đó trong file properties languagesMap
+    // từ từ khóa này thêm đuôi ngôn ngữ tương ứng sẽ hiển thị ra câu tương ứng bằng ngôn ngữ đó
     private final Map<String, String> languageMap = new HashMap<>();
+    // đối tượng lưu cài đặt của chương trình
     private final Setup setup = new Setup();
+    // đường dẫn file lưu cài đặt của chương trình
     private Path pathFile = Paths.get(FILE_SETUP_NAME);
 
     // lấy địa chỉ app data theo user người dùng và thêm vào thư mục Convert PDF to CHL
     // ví dụ: C:\Users\HuanTech PC\AppData\Roaming\convert pdf to chl
     private static final String appDataPath = System.getenv("APPDATA");
+    // đường dẫn thư mục lưu cài đặt của chương trình từ địa chỉ app data đã lấy được ở trên
     private static final Path myAppPath = Paths.get(appDataPath, "Convert PDF to CHL");
+    // list chứa các control UI cần để thay đổi ngôn ngữ hiển thị
     private final ObservableList<Object> controls = FXCollections.observableArrayList();
 
+    /**
+     * hàm khởi tạo đối tượng duy nhất của class
+     */
     private SetupData() {
+        // tạo đường dẫn đến file cài đặt từ thư mục lưu cài đặt
         FILE_SETUP_NAME = myAppPath.toAbsolutePath() + "\\setup_data.set";
+        // tạo path của đường dẫn trên
         pathFile = Paths.get(FILE_SETUP_NAME);
 
+        // tạo thư mục và file lưu cài đặt nếu chưa tồn tại
         createDirAndFile();
 
+        // thêm các câu bằng 3 ngôn ngữ và từ khóa giống nhau của câu đó của nó vào map
+        // 1 câu nhưng bằng 3 ngôn ngữ thì dùng từ khóa giống nhau để khi lấy từ khóa của nó rồi thêm đuôi ngôn ngữ(vi, ja, en) sẽ lấy được câu theo ngôn ngữ đó
         languageMap.put("Chọn file cần chuyển", "Select_the_file_to_transfer");
         languageMap.put("Chọn thư mục lưu file", "Select_the_folder_to_save_the_file");
         languageMap.put("THỰC HIỆN CHUYỂN FILE", "IMPLEMENT_FILE_TRANSFER");
@@ -164,6 +181,9 @@ public class SetupData {
         languageMap.put("Material(m)", "Base_material");
     }
 
+    /**
+     * @return đối tượng duy nhất(singleton) của SetupData
+     */
     public static SetupData getInstance() {
         if (instance == null) {
             synchronized (SetupData.class) {
@@ -173,14 +193,24 @@ public class SetupData {
         return instance;
     }
 
+    /**
+     * @return list các control
+     */
     public ObservableList<Object> getControls() {
         return controls;
     }
 
+    /**
+     * @return đối tượng chứa cài đặt của app
+     */
     public Setup getSetup() {
         return setup;
     }
 
+    /**
+     * set link của file pdf cho đối tượng cài đặt
+     * @param linkPdfFile link file pdf
+     */
     public void setLinkPdfFile(String linkPdfFile) {
         setup.setLinkPdfFile(linkPdfFile);
         try {
@@ -190,6 +220,10 @@ public class SetupData {
         }
     }
 
+    /**
+     * set link thư mục chứa file chl sẽ tạo cho đối tượng cài đặt
+     * @param SaveCvsFileDir link thư mục chứa file chl sẽ tạo
+     */
     public void setLinkSaveCvsFileDir(String SaveCvsFileDir) {
         setup.setLinkSaveCvsFileDir(SaveCvsFileDir);
         try {
@@ -199,33 +233,43 @@ public class SetupData {
         }
     }
 
+    /**
+     * set ngôn ngữ cho đối tượng cài đặt và lưu ngôn ngữ vào file
+     * @param lang ngôn ngữ
+     */
     public void setLang(String lang) throws IOException {
         setup.setLang(lang);
         saveSetup();
     }
 
+    /**
+     * @return list chứa các file chl đã tạo
+     */
     public ObservableList<CsvFile> getChlFiles() {
         return csvFiles;
     }
 
+    /**
+     * @return map ngôn ngữ
+     */
     public Map<String, String> getLanguageMap() {
         return languageMap;
     }
 
+    /**
+     * lấy các cài đặt từ file cài đặt và lưu vào đối tượng cài đặt
+     * @throws IOException lỗi đọc file cài đặt
+     */
     public void loadSetup() throws IOException {
+
         // Tạo thư mục và file nếu nó không tồn tại
-        createDirAndFile();
-        // đoạn code này có thể không cần vì đã thay bằng đoạn trên
         if (Files.notExists(pathFile)) {
-            try {
-                Files.createFile(pathFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            createDirAndFile();
             System.out.println(setup.getLinkPdfFile() + setup.getLinkSaveCvsFileDir() + setup.getLang());
             return;
         }
 
+        // đọc dữ liệu nhị phân từ file cài đặt
         try (DataInputStream dis = new DataInputStream(new BufferedInputStream(Files.newInputStream(pathFile)))) {
             boolean eof = false;
             while (!eof) {
@@ -251,6 +295,10 @@ public class SetupData {
         }
     }
 
+    /**
+     * lưu dữ liệu cài đặt từ đối tượng setup vào file
+     * @throws IOException lỗi ghi file
+     */
     public void saveSetup() throws IOException {
         // Tạo thư mục và file nếu nó không tồn tại
         createDirAndFile();
@@ -258,7 +306,7 @@ public class SetupData {
         // Tạo đối tượng File đại diện cho file cần xóa
         File file = new File(FILE_SETUP_NAME);
 
-        // Kiểm tra nếu file tồn tại và xóa nó
+        // Kiểm tra nếu file tồn tại thì xóa nó
         // vì file là readonly nên cần xóa đi tạo file mới
         if (file.exists()) {
             if (file.delete()) {
@@ -269,6 +317,7 @@ public class SetupData {
         } else {
             System.out.println("File data không tồn tại.");
         }
+        // ghi file nhị phân
         try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(pathFile)))) {
             dos.writeUTF(setup.getLinkPdfFile());
             dos.writeUTF(setup.getLinkSaveCvsFileDir());
@@ -289,15 +338,19 @@ public class SetupData {
         }
     }
 
+    /**
+     * tạo thư mục và file nếu nó không tồn tại
+     */
     private void createDirAndFile() {
         try {
-            // Tạo thư mục và file nếu nó không tồn tại
+            // Tạo thư mục nếu nó không tồn tại
             if (Files.notExists(myAppPath)) {
                 Files.createDirectory(myAppPath);
-                if (Files.notExists(pathFile)) {
-                    Files.createFile(pathFile);
-                    System.out.println(pathFile);
-                }
+            }
+            // Tạo file nếu nó không tồn tại
+            if (Files.notExists(pathFile)) {
+                Files.createFile(pathFile);
+                System.out.println(pathFile);
             }
 
         } catch (IOException e) {

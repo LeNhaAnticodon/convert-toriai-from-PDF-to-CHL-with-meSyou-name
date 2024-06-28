@@ -95,16 +95,21 @@ public class ConVertPdfToExcelCHLController implements Initializable {
     @FXML
     public Label baseMaterial;
 
+    // map các ngôn ngữ
     private Map<String, String> languageMap;
 
+    // bundle để lấy các giá trị trong file languagesMap. properties
     private ResourceBundle bundle;
 
+    // các control cần thay đổi ngôn ngữ
     private ObservableList<Object> controls;
 
+    // get các control cần thay đổi ngôn ngữ
     public ObservableList<Object> getControls() {
         return controls;
     }
 
+    // alert của app
     private final Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
 
     private static final String CONFIRM_PDF_FILE_LINK_TITLE = "Xác nhận địa chỉ file PDF";
@@ -129,31 +134,53 @@ public class ConVertPdfToExcelCHLController implements Initializable {
     private static final String ERROR_COPY_CHL_DIR_CONTENT = "Không thể copy địa chỉ thư mục chứa các file CHL";
 
 
+    /**
+     * hàm khởi tạo
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         System.out.println("link csv " + SetupData.getInstance().getSetup().getLinkSaveCvsFileDir());
         System.out.println("old link file " + SetupData.getInstance().getSetup().getLinkPdfFile());
         System.out.println("old" + SetupData.getInstance().getSetup().getLinkPdfFile());
 
+        // bind list view với list các file chl đã tạo
         csvFIleList.setItems(SetupData.getInstance().getChlFiles());
+        // cài đặt các cell của list view
         setupCellChlFIleList();
 
+        // lấy map chứa các câu bằng các ngôn ngữ khác nhau và value là từ khóa của chúng trong file languagesMap.properties
         languageMap = SetupData.getInstance().getLanguageMap();
+        // lấy list chứa các control UI cần để thay đổi ngôn ngữ hiển thị
         controls = SetupData.getInstance().getControls();
+        // thêm các control của controller này vào map
         controls.addAll(getPdfFileBtn, setSaveCsvFileDirBtn, convertFileBtn, openDirCsvBtn, listCsvFileTitle, menuBar, copyLinkStatusLabel, copyLinkBtn,
                 fileName, product, baseMaterial);
 
-        // Load the resource bundle
+        // Lấy bundle của file ngôn ngữ
         bundle = ResourceBundle.getBundle("languagesMap");
 
+        // set UserData cho 3 radio button ngôn ngữ
         setLangVietNamBtn.setUserData("vi");
         setLangEnglishBtn.setUserData("en");
         setLangNihongoBtn.setUserData("ja");
 
+        // lấy ngôn ngữ đã lưu trong file setup
         String lang = SetupData.getInstance().getSetup().getLang();
+        // nếu lang không có giá trị hoặc giá trị không đúng cấu trúc thì cho mặc định là tiếng Việt
+        // và cho radio click vào nút tiếng việt
         if (lang.isBlank() || (!lang.equals("vi") && !lang.equals("en") && !lang.equals("ja"))) {
             languages.selectToggle(setLangVietNamBtn);
-        } else {
+        }
+        // còn không thì cho radio click vào nút tương ứng với lang
+        else {
             if (lang.equals("vi")) {
                 languages.selectToggle(setLangVietNamBtn);
             }
@@ -167,45 +194,56 @@ public class ConVertPdfToExcelCHLController implements Initializable {
             }
         }
 
+        // cho hiển thị ngôn ngữ các control theo radio button ngôn ngữ đã chọn
         updateLangInBackground(languages.getSelectedToggle(), controls);
-        setlang();
+//        setlang();
 
+        // tạo sự kiện thay đổi nút ngôn ngữ thì cho hiển thị theo ngôn ngữ mới
+        // và lưu ngôn ngữ mới vào file và đối tượng setup
         languages.selectedToggleProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
                 updateLangInBackground(newValue, controls);
+                // và lưu ngôn ngữ mới vào file và đối tượng setup
                 setlang();
             }
         });
 
+        // nếu 2 ô hiển thị link file và thư mục có thay đổi giá trị thì cho viền của chúng đổi màu trong 3s
         linkPdfFile.textProperty().addListener((observableValue, oldValue, newValue) -> {
             setBorderColorTF(linkPdfFile);
         });
-
         linkCvsDir.textProperty().addListener((observableValue, oldValue, newValue) -> {
             setBorderColorTF(linkCvsDir);
         });
 
+        // lấy địa chỉ đã chọn lần gần nhất của thư mục sẽ lưu file chl
         File fileCsvDiv = new File(SetupData.getInstance().getSetup().getLinkSaveCvsFileDir());
 
+        // nếu địa chỉ đúng là thư mục thì cho hiển thị trên màn hình
         if (fileCsvDiv.isDirectory()) {
             linkCvsDir.setText(SetupData.getInstance().getSetup().getLinkSaveCvsFileDir());
         }
     }
 
+    /**
+     * đổi màu viền của textfield
+     */
     private void setBorderColorTF(TextField textField) {
+        // chạy trong nền
         Task<Void> task = new Task<>() {
             @Override
             protected Void call() {
                 Platform.runLater(() -> {
+                    // Đổi màu viền
                     textField.setStyle("-fx-border-color: #FFA000; -fx-border-width: 2; -fx-border-radius: 5");
-                    // Tạo Timeline để ẩn Label sau 3 giây
+                    // Tạo Timeline để xóa viền sau 3 giây
                     Timeline timeline = new Timeline(new KeyFrame(
                             Duration.seconds(3),
                             event -> {
                                 textField.setStyle("-fx-border-color:  none");
 //                                textField.setStyle("-fx-border-width:  none");
 //                                textField.setStyle("-fx-border-radius:  none");
-                            } // Ẩn Label sau 3 giây
+                            }
                     ));
                     // Chạy Timeline một lần
                     timeline.setCycleCount(1);
@@ -221,6 +259,9 @@ public class ConVertPdfToExcelCHLController implements Initializable {
         thread.start();
     }
 
+    /**
+     * set ngôn ngữ theo nút ngôn ngữ đang chọn cho đối tượng cài đặt và lưu ngôn ngữ vào file
+     */
     private void setlang() {
         try {
             SetupData.getInstance().setLang(languages.getSelectedToggle().getUserData().toString());
@@ -661,6 +702,9 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
     }
 
+    /**
+     * cài đặt định dạng cho các cell của list view
+     */
     private void setupCellChlFIleList() {
         /*gọi hàm setCellFactory để cài đặt lại các thuộc tính của ListView
             tham số là 1 FunctionalInterface Callback, ta sẽ tạo lớp ẩn danh của
