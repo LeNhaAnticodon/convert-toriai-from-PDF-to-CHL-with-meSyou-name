@@ -12,19 +12,19 @@ import javafx.scene.control.Label;
 
 public class AboutController {
     @FXML
-    public Button okBtn;
+    public Button okBtn;// nút đóng dialog
     @FXML
-    public Label introduce;
+    public Label introduce;// text giới thiệu
     @FXML
-    public Label introduceContent;
+    public Label introduceContent;// nội dung giới thiệu
     @FXML
-    public Label using;
+    public Label using;// hướng dẫn sử dụng
     @FXML
-    public Label usingContent;
+    public Label usingContent;// nội dung hướng dẫn sử dụng
     @FXML
-    public Label creator;
+    public Label creator;// text tá giả
 
-    private Dialog<Object> dialog;
+    private Dialog<Object> dialog;// dialog của cửa sổ
 
     /**
      * xử lý sự kiện khi click vào nút ok thì đóng dialog

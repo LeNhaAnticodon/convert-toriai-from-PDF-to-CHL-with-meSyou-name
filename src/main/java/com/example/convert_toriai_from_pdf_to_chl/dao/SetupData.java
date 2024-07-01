@@ -208,7 +208,7 @@ public class SetupData {
     }
 
     /**
-     * set link của file pdf cho đối tượng cài đặt
+     * set link của file pdf cho đối tượng cài đặt và lưu vào file
      * @param linkPdfFile link file pdf
      */
     public void setLinkPdfFile(String linkPdfFile) {
@@ -221,7 +221,7 @@ public class SetupData {
     }
 
     /**
-     * set link thư mục chứa file chl sẽ tạo cho đối tượng cài đặt
+     * set link thư mục chứa file chl sẽ tạo cho đối tượng cài đặt và lưu vào file
      * @param SaveCvsFileDir link thư mục chứa file chl sẽ tạo
      */
     public void setLinkSaveCvsFileDir(String SaveCvsFileDir) {
