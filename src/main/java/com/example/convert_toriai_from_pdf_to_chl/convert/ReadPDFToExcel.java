@@ -697,7 +697,7 @@ public class ReadPDFToExcel {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
         Date currentDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
 //        // Tạo thêm fomat có thêm giây
 //        SimpleDateFormat sdfSecond = new SimpleDateFormat("yyMMddHHmmss");
 
