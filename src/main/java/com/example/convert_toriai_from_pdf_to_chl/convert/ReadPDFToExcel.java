@@ -285,7 +285,7 @@ public class ReadPDFToExcel {
                     String honSuu = extractValue(line, "本数:", " ").split(" ")[0];
                     // mẫu định dạng "#.##". Mẫu này chỉ hiển thị phần thập phân nếu có, và tối đa là 2 chữ số thập phân.
                     DecimalFormat df = new DecimalFormat("#.##");
-                    kouZaiChouPairs.put(new StringBuilder().append(df.format(Double.parseDouble(kouZaiChou))), convertStringToIntAndMul(honSuu, 1));
+                    kouZaiChouPairs.put(new StringBuilder().append(df.format(Double.parseDouble(kouZaiChou.trim()))), convertStringToIntAndMul(honSuu.trim(), 1));
                 }
 
                 // nếu dòng chứa 名称 thì là dòng sản phẩm
@@ -310,7 +310,7 @@ public class ReadPDFToExcel {
                     String length = meiSyouLengths[meiSyouLengths.length - 1];
 
                     // thêm tên và chiều dài vào mảng với chiều dài x 100
-                    StringBuilder[] nameAndLength = {new StringBuilder().append(name), new StringBuilder().append(convertStringToIntAndMul(length, 100))};
+                    StringBuilder[] nameAndLength = {new StringBuilder().append(name), new StringBuilder().append(convertStringToIntAndMul(length.trim(), 100))};
 
                     // lấy số lượng sản phẩm
                     String meiSyouHonSuu = extractValue(line, "mm x", "本").trim();
