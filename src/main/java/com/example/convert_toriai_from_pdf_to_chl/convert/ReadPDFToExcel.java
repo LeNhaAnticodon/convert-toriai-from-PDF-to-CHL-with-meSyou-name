@@ -697,7 +697,8 @@ public class ReadPDFToExcel {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
         Date currentDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+        SimpleDateFormat sdfMiliS = new SimpleDateFormat("SSS");
 //        // Tạo thêm fomat có thêm giây
 //        SimpleDateFormat sdfSecond = new SimpleDateFormat("yyMMddHHmmss");
 
@@ -714,6 +715,8 @@ public class ReadPDFToExcel {
 
         // lấy thời gian hiện tại với fomat đã chọn
         String currentTime = sdf.format(currentDate);
+        String currentTimeMiliS = String.valueOf((Integer.parseInt(sdfMiliS.format(currentDate)) / 100));
+        currentTime = currentTime + currentTimeMiliS;
 
         // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2
         fileName = fileChlName + " " + kouSyu + ".sysc2";
@@ -747,7 +750,7 @@ public class ReadPDFToExcel {
         double seiHinChouGoukei = 0;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
-            writer.write(currentTime + "+" + timePlus + ",,,");
+            writer.write(currentTime + timePlus + ",,,");
             writer.newLine();
 
 

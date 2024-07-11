@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="them dinh dang time co milisecon">
+    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="hoan tat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" afterDir="false" />
     </list>
@@ -163,7 +163,8 @@
       <workItem from="1720056439250" duration="1556000" />
       <workItem from="1720058469842" duration="465000" />
       <workItem from="1720151178588" duration="99000" />
-      <workItem from="1720583526219" duration="834000" />
+      <workItem from="1720583526219" duration="886000" />
+      <workItem from="1720697229904" duration="2103000" />
     </task>
     <task id="LOCAL-00001" summary="them tong chieu dai">
       <created>1718771054905</created>
@@ -242,7 +243,14 @@
       <option name="project" value="LOCAL" />
       <updated>1720058438745</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="hoan tat">
+      <created>1720584926701</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1720584926701</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,7 +287,8 @@
     <MESSAGE value="sua cach tao thu muc va file" />
     <MESSAGE value="hoan thanh" />
     <MESSAGE value="them dinh dang time co milisecon" />
-    <option name="LAST_COMMIT_MESSAGE" value="them dinh dang time co milisecon" />
+    <MESSAGE value="hoan tat" />
+    <option name="LAST_COMMIT_MESSAGE" value="hoan tat" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
