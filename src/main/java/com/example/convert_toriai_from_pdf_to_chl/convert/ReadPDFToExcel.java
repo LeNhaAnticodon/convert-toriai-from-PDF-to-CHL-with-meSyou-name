@@ -60,6 +60,10 @@ public class ReadPDFToExcel {
     // tên file chl đầy đủ sẽ tạo đã bao gồm tên loại vật liệu
     public static String fileName;
 
+    // tổng chiều dài các kozai
+    private static  double kouzaiChouGoukei = 0;
+    private static double seiHinChouGoukei = 0;
+
     /**
      * chuyển đổi pdf tính vật liệu thành các file chl theo từng vật liệu khác nhau
      * @param filePDFPath link file pdf
@@ -138,6 +142,10 @@ public class ReadPDFToExcel {
 //            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin của vật liệu này vào các file định dạng sysc2 là file của chl
             int fileListSize = fileList.size();
+
+            //reset lại các tổng chiều dài trước khi ghi các file của vật liệu mới
+            kouzaiChouGoukei = 0;
+            seiHinChouGoukei = 0;
             for (int k = 0; k < fileListSize; k++) {
                 Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = fileList.get(k);
                 j++;
@@ -401,7 +409,7 @@ public class ReadPDFToExcel {
             boolean is100 = false;
 
             // biến nhớ đã lặp qua kouZaiNum bao nhiêu lần mà số dòng vẫn chưa vượt quá 99
-            int numKouZaiChouMap1 = 1;
+            int numKouZaiChouMap1 = 0;
 
             for (int i = 1; i <= kouZaiNum; i++) {
                 // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì lấy biến nhớ số lần lặp hợp lệ
@@ -905,8 +913,8 @@ public class ReadPDFToExcel {
         }
 
         // tổng chiều dài các kozai
-        double kouzaiChouGoukei = 0;
-        double seiHinChouGoukei = 0;
+        double kouzaiChouGoukeiTempt = 0;
+        double seiHinChouGoukeiTempt = 0;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(chlPath, Charset.forName("MS932")))) {
 
             writer.write(currentTime + timePlus + ",,,");
@@ -946,7 +954,7 @@ public class ReadPDFToExcel {
                     keyTemp = String.valueOf(kouZaiEntry.getKey());
                     valueTemp = kouZaiEntry.getValue();
                     // cộng thêm chiều dài của bozai * số lượng vào tổng
-                    kouzaiChouGoukei += Double.parseDouble(keyTemp) * valueTemp;
+                    kouzaiChouGoukeiTempt += Double.parseDouble(keyTemp) * valueTemp;
                 }
 
                 // Ghi dữ liệu từ mapvalue vào ô A4, B4 và các hàng tiếp theo
@@ -976,7 +984,7 @@ public class ReadPDFToExcel {
                         line[3] = "";
 
                         // cộng thêm vào chiều dài của sản phẩm * số lượng vào tổng
-                        seiHinChouGoukei += Double.parseDouble(leng) * Double.parseDouble(num);
+                        seiHinChouGoukeiTempt += Double.parseDouble(leng) * Double.parseDouble(num);
 
                         // thêm hàng sản phẩm vừa tạo vào list
                         toriaiDatas.add(line);
@@ -1075,10 +1083,24 @@ public class ReadPDFToExcel {
 //            System.out.println("File does not exist.");
         }
 
-        System.out.println("tong chieu dai bozai " + kouzaiChouGoukei);
-        System.out.println("tong chieu dai san pham " + seiHinChouGoukei);
+        System.out.println("tong chieu dai bozai " + kouzaiChouGoukeiTempt);
+        System.out.println("tong chieu dai san pham " + seiHinChouGoukeiTempt);
+
+        // cộng thêm chiều các tổng chiều dài file hiện tại vào tổng các chiều dài của các file
+        kouzaiChouGoukei += kouzaiChouGoukeiTempt;
+        seiHinChouGoukei += seiHinChouGoukeiTempt;
+
+        // nếu đang ghi file cuối cùng của vật liệu thì mới ghi các tổng chiều dài
+        if (fileListSize == k) {
+            kouzaiChouGoukeiTempt = kouzaiChouGoukei;
+            seiHinChouGoukeiTempt = seiHinChouGoukei;
+        } else {
+            kouzaiChouGoukeiTempt = 0;
+            seiHinChouGoukeiTempt = 0;
+        }
+
         // thêm file vào list hiển thị
-        csvFileNames.add(new CsvFile(fileName, kouSyuName, kouzaiChouGoukei, seiHinChouGoukei));
+        csvFileNames.add(new CsvFile(fileName, kouSyuName, kouzaiChouGoukeiTempt, seiHinChouGoukeiTempt));
 
     }
 

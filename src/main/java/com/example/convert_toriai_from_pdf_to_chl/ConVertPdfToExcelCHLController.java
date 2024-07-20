@@ -885,6 +885,11 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
                             // vùng chứa tổng chiều dài bozai
                             Label labelKouzaiChou = new Label(formattedKouzaiChouGoukei + "  ");
+                            // nếu vùng chứa tổng chiều dài là 0(chưa phải file cuối cùng của vật liệu đang xét)
+                            // thì cho nó hiển thị rỗng
+                            if (kouzaiChouGoukei == 0) {
+                                labelKouzaiChou.setText("_____  ");
+                            }
                             labelKouzaiChou.setMinWidth(USE_PREF_SIZE);
                             labelKouzaiChou.setPrefWidth(59);
                             labelKouzaiChou.setStyle("-fx-text-fill: #F57C00");
@@ -892,6 +897,10 @@ public class ConVertPdfToExcelCHLController implements Initializable {
 
                             // vùng chứa tổng chiều dài sản phẩm
                             Label labelSeihinChou = new Label("  " + formattedseiHinChouGoukei);
+
+                            if (seiHinChouGoukei == 0) {
+                                labelSeihinChou.setText("  _____");
+                            }
                             labelSeihinChou.setMinWidth(USE_PREF_SIZE);
                             labelSeihinChou.setPrefWidth(59);
                             labelSeihinChou.setStyle("-fx-text-fill: #00796B");
