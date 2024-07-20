@@ -337,11 +337,11 @@ public class ReadPDFToExcel {
             kaKouPairs.put(kouZaiChouPairs, meiSyouPairs);
         }
 
-        // in thông tin vật liệu
+/*        // in thông tin vật liệu
         kaKouPairs.forEach((kouZaiChouPairs, meiSyouPairs) -> {
             kouZaiChouPairs.forEach((key, value) -> System.out.println("\n" + key.toString() + " : " + value));
             meiSyouPairs.forEach((key, value) -> System.out.println(key[0].toString() + " " + key[1].toString() + " : " + value));
-        });
+        });*/
 
 
 //        if (checkRowNum(kaKouPairs) > 99) {
@@ -400,31 +400,42 @@ public class ReadPDFToExcel {
             // biến nhớ vượt quá 100 dòng
             boolean is100 = false;
 
-            // tạo map của chiều dài bozai và số lượng mới với số lượng chỉ có 1
-            // vì đang lặp qua số lượng bozai nên mỗi lần lặp số lượng đương nhiên là 1
-            // rồi thêm map mới này vào map chứa toriai
-            Map<StringBuilder, Integer> newKouZaiChouPairs = new HashMap<>();
+            // biến nhớ đã lặp qua kouZaiNum bao nhiêu lần mà số dòng vẫn chưa vượt quá 99
+            int numKouZaiChouMap1 = 1;
 
-            newKouZaiChouPairs.put(koZaiLength, 1);
             for (int i = 1; i <= kouZaiNum; i++) {
-
-                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thêm map mới chứa phần còn lại của đoạn bozai đang lặp
-                // với số lượng bozai = 1 vào map chứa toriai là map2
-                // cho luôn numRow= 100 để điều kiện luôn đúng rồi nhảy vòng lặp
+                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì lấy biến nhớ số lần lặp hợp lệ
+                // cho biến nhớ quá 100 là true và thoát lặp
                 if (numRow + meiSyouPairs.size() > 99) {
-                    numRow = 100;
-                    // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
-                    map2.put(newKouZaiChouPairs, meiSyouPairs);
+
                     is100 = true;
-                    continue;
+                    break;
                 }
-
-                // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map1
-                map1.put(newKouZaiChouPairs, meiSyouPairs);
-
+                // lấy biến nhớ số lần lặp đã hợp lệ là số dòng chưa vượt qua 99
+                numKouZaiChouMap1 = i;
                 // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(numRow += meiSyouPairs.size())
                 // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
                 numRow += meiSyouPairs.size();
+            }
+
+            Map<StringBuilder, Integer> newKouZaiChouPairs = new HashMap<>();
+            // nếu số dòng hợp lệ > 0 thì tức là có dòng hợp lệ
+            if (numKouZaiChouMap1 > 0) {
+                // tạo map của chiều dài bozai và số lượng mới với số lượng là số lần lặp hợp lệ của kouZaiNum mà chưa vượt quá 99 dòng
+                // rồi thêm map mới này vào map chứa toriai
+                newKouZaiChouPairs = new HashMap<>();
+                newKouZaiChouPairs.put(koZaiLength, numKouZaiChouMap1);
+                // thêm map mới vào map chứa toriai là map1
+                map1.put(newKouZaiChouPairs, meiSyouPairs);
+            }
+
+            // nếu số lần lặp của map 1 numKouZaiChouMap1 < kouZaiNum tức là nó chưa đi hết kouZaiNum mà đã vượt quá 99 dòng
+            // thêm số lượng còn lại vào map2
+            if (numKouZaiChouMap1 < kouZaiNum) {
+                newKouZaiChouPairs = new HashMap<>();
+                newKouZaiChouPairs.put(koZaiLength, kouZaiNum - numKouZaiChouMap1);
+                // thêm map mới vào map chứa toriai là map2
+                map2.put(newKouZaiChouPairs, meiSyouPairs);
             }
 
             // nếu lần lặp của bozai này đã quá 100 dòng thì thoát để tạo vòng lặp tiếp thêm vào map 2
@@ -441,6 +452,7 @@ public class ReadPDFToExcel {
             for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
                 numLoop2 += 1;
 
+                // nếu numLoop2 <= numLoop1 thì tức là lần lặp này vẫn thuộc lần lặp của map1 đã lặp ở bên trên
                 if (numLoop2 <= numLoop1) {
                     continue;
                 }
