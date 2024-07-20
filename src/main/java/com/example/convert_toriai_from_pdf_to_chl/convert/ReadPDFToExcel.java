@@ -20,6 +20,8 @@ import java.util.concurrent.TimeoutException;
 
 public class ReadPDFToExcel {
 
+    // list các file(map chứa tính vật liệu) của vật liệu hiện tại
+    private static final List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> fileList = new ArrayList<>();
     // time tháng và ngày
     private static String shortNouKi = "";
     // 備考
@@ -116,6 +118,7 @@ public class ReadPDFToExcel {
             }*/
         }
 
+        int j = 0;
         // lặp qua từng loại vật liệu trong list và ghi chúng vào các file chl
         for (int i = 1; i < kakuKouSyuList.size(); i++) {
             // tách các đoạn bozai thành mảng
@@ -124,15 +127,19 @@ public class ReadPDFToExcel {
             // tại đoạn đầu tiên sẽ không chứa bozai mà chứa tên vật liệu
             // lấy ra thông số loại vật liệu và 3 size riêng lẻ của vật liệu
             getKouSyu(kakuKakou);
-            // tạo map kaKouPairs và nhập thông tin tính vật liệu vào
-            // kaKouPairs là map chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
+            // tạo list fileList chứa các map và nhập thông tin tính vật liệu vào
+            // map chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
             // còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
-            Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = getToriaiData(kakuKakou);
+            // mỗi map này trong list sẽ tạo thành 1 file trong trường hợp chia file
+            List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> fileList = getToriaiData(kakuKakou);
 
 //            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
 //            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
-            // ghi thông tin vào file định dạng sysc2 là file của chl
-            writeDataToChl(kaKouPairs, i, csvFileNames);
+            // ghi thông tin của vật liệu này vào các file định dạng sysc2 là file của chl
+            for (Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs: fileList) {
+                j++;
+                writeDataToChl(kaKouPairs, j, csvFileNames);
+            }
         }
 
     }
@@ -243,18 +250,20 @@ public class ReadPDFToExcel {
 
     /**
      * phân tích tính vật liệu của vật liệu đang xét và gán vào map thông tin
+     *
      * @param kakuKakou mảng chứa các tính vật liệu của vật liệu đang xét
-     * @return map các đoạn tính vật liệu chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai
-     *  còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
+     * @return list các map các đoạn tính vật liệu chứa key cũng là map chỉ có 1 cặp có key là chiều dài bozai, value là số lượng bozai,
+     * mỗi phần tử của list sẽ tạo 1 file
+     * còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
      */
-    private static Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> getToriaiData(String[] kakuKakou) throws TimeoutException {
+    private static List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> getToriaiData(String[] kakuKakou) throws TimeoutException {
 
         // tạo map
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = new LinkedHashMap<>();
 
         // nếu không có thông tin thì thoát
         if (kakuKakou == null) {
-            return kaKouPairs;
+            return fileList;
         }
 
         // lặp qua các đoạn bozai và thêm chúng vào map chứa toàn bộ thông tin vật liệu
@@ -328,26 +337,25 @@ public class ReadPDFToExcel {
             meiSyouPairs.forEach((key, value) -> System.out.println(key[0].toString() + " " + key[1].toString() + " : " + value));
         });
 
-        // list các file của vật liệu hiện tại
-        List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> fileList = new ArrayList<>();
-        if (checkRowNum(kaKouPairs) > 99) {
+
+//        if (checkRowNum(kaKouPairs) > 99) {
             divFile(kaKouPairs);
-        }
+//        }
 
         System.out.println(rowToriAiNum);
         System.out.println("\n" + kirirosu);
 
-        // trả về map kết quả để ghi vào file chl sysc2
-        return kaKouPairs;
+        // trả về list các map kết quả để ghi vào file chl sysc2
+        return fileList;
     }
 
-    private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) {
+    private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
+
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map1 = new LinkedHashMap<>();
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map2 = new LinkedHashMap<>();
 
         int numLoop1 = 0;
         int numRow = 0;
-
         // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
             numLoop1 += 1;
@@ -355,6 +363,15 @@ public class ReadPDFToExcel {
             Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
             // lấy map tên + chiều dài sản phẩm và số lượng
             Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+
+            // nếu số sản phẩm trong 1 bozai  lớn hơn 99 thì không
+            // thể chia sang file khác được và phải báo lỗi
+            if (meiSyouPairs.size() > 99) {
+                System.out.println("vượt quá 99 hàng");
+                // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2 để in ra thông báo
+                fileName = fileChlName + " " + kouSyu + ".sysc2";
+                throw new TimeoutException();
+            }
 
             // tạo biến chứa chiều dài và số lượng bozai
             StringBuilder koZaiLength = new StringBuilder();
@@ -367,6 +384,7 @@ public class ReadPDFToExcel {
 
             // thêm toriai vào map 1 đến số lượng dòng <= 99
 
+            // biến nhớ vượt quá 100 dòng
             boolean is100 = false;
 
             // tạo map của chiều dài bozai và số lượng mới với số lượng chỉ có 1
@@ -377,11 +395,15 @@ public class ReadPDFToExcel {
             newKouZaiChouPairs.put(koZaiLength, 1);
             for (int i = 1; i <= kouZaiNum; i++) {
 
-                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
+                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thêm map mới chứa phần còn lại của đoạn bozai đang lặp
+                // với số lượng bozai = 1 vào map chứa toriai là map2
+                // cho luôn numRow= 100 để điều kiện luôn đúng rồi nhảy vòng lặp
                 if (numRow + meiSyouPairs.size() > 99) {
+                    numRow = 100;
                     // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
                     map2.put(newKouZaiChouPairs, meiSyouPairs);
                     is100 = true;
+                    continue;
                 }
 
                 // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map1
@@ -399,60 +421,38 @@ public class ReadPDFToExcel {
 
         }
 
-        int numLoop2 = 0;
-        // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
-        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
-            numLoop1 += 1;
-            // lấy map chiều dài bozai và số lượng
-            Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
-            // lấy map tên + chiều dài sản phẩm và số lượng
-            Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+        // nếu lần lặp 1 vẫn chưa lặp hết số bozai thì lặp nốt phần còn lại cho vào map 2
+        if (numLoop1 < kaKouPairs.size() - 1) {
+            int numLoop2 = 0;
+            // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
+            for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
+                numLoop2 += 1;
 
-            // tạo biến chứa chiều dài và số lượng bozai
-            StringBuilder koZaiLength = new StringBuilder();
-            int kouZaiNum = 1;
-            // lặp qua map bozai lấy giá trị số lượng bozai
-            for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
-                koZaiLength.append(e.getValue());
-                kouZaiNum = entry.getValue();
-            }
-
-            // thêm toriai vào map 1 đến số lượng dòng <= 99
-
-            int kouZaiNumMap1 = 0;
-
-            // tạo map của chiều dài bozai và số lượng mới với số lượng chỉ có 1
-            // vì đang lặp qua số lượng bozai nên mỗi lần lặp số lượng đương nhiên là 1
-            // rồi thêm map mới này vào map chứa toriai
-            Map<StringBuilder, Integer> newKouZaiChouPairs = new HashMap<>();
-
-            newKouZaiChouPairs.put(koZaiLength, 1);
-            for (int i = 1; i <= kouZaiNum; i++) {
-                // lấy số vòng đã lặp thành công + 1
-                kouZaiNumMap1 = i + 1;
-
-                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thoát
-                if (numRow + meiSyouPairs.size() > 99) {
-                    break;
+                if (numLoop2 <= numLoop1) {
+                    continue;
                 }
 
-                // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map1
-                map1.put(newKouZaiChouPairs, meiSyouPairs);
+                // lấy map chiều dài bozai và số lượng
+                Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
+                // lấy map tên + chiều dài sản phẩm và số lượng
+                Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
 
-                // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(numRow += meiSyouPairs.size())
-                // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
-                numRow += meiSyouPairs.size();
+                // thêm toriai vào map 2
+                map2.put(kouZaiChouPairs, meiSyouPairs);
             }
-
-            // nếu chưa lặp hết mà đã quá 99 dòng thì thêm phần còn lại vào map 2
-            if (kouZaiNumMap1 < kouZaiNum) {
-                for (int i = kouZaiNumMap1; i < kouZaiNum; i++) {
-                    // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
-                    map2.put(newKouZaiChouPairs, meiSyouPairs);
-                }
-            }
-
         }
+
+        // thêm map1 vào vào list file
+        fileList.add(map1);
+
+        // nếu map2 không có phần tử nào tức đã hoàn thành chia file
+        if (map2.size() == 0) {
+            return;
+        }
+
+        // gọi đệ quy hàm chia file và truyền map2 vào để tiếp tục chia map 2
+        divFile(map2);
+
     }
 
     private static int checkRowNum(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
