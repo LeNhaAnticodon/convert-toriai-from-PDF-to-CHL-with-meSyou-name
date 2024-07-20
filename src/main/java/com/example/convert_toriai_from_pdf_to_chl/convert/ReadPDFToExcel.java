@@ -342,29 +342,114 @@ public class ReadPDFToExcel {
     }
 
     private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) {
-        int numRow = 0;
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map1 = new LinkedHashMap<>();
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map2 = new LinkedHashMap<>();
 
+        int numLoop1 = 0;
+        int numRow = 0;
+
         // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
-
+            numLoop1 += 1;
             // lấy map chiều dài bozai và số lượng
             Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
             // lấy map tên + chiều dài sản phẩm và số lượng
             Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
 
-            // tạo biến chứa số lượng bozai
+            // tạo biến chứa chiều dài và số lượng bozai
+            StringBuilder koZaiLength = new StringBuilder();
             int kouZaiNum = 1;
             // lặp qua map bozai lấy giá trị số lượng bozai
             for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
+                koZaiLength.append(e.getValue());
                 kouZaiNum = entry.getValue();
             }
 
-            for (int i = 0; i < kouZaiNum; i++) {
-                // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(kouZaiNum * meiSyouPairs.size())
+            // thêm toriai vào map 1 đến số lượng dòng <= 99
+
+            boolean is100 = false;
+
+            // tạo map của chiều dài bozai và số lượng mới với số lượng chỉ có 1
+            // vì đang lặp qua số lượng bozai nên mỗi lần lặp số lượng đương nhiên là 1
+            // rồi thêm map mới này vào map chứa toriai
+            Map<StringBuilder, Integer> newKouZaiChouPairs = new HashMap<>();
+
+            newKouZaiChouPairs.put(koZaiLength, 1);
+            for (int i = 1; i <= kouZaiNum; i++) {
+
+                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
+                if (numRow + meiSyouPairs.size() > 99) {
+                    // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
+                    map2.put(newKouZaiChouPairs, meiSyouPairs);
+                    is100 = true;
+                }
+
+                // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map1
+                map1.put(newKouZaiChouPairs, meiSyouPairs);
+
+                // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(numRow += meiSyouPairs.size())
                 // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
                 numRow += meiSyouPairs.size();
+            }
+
+            // nếu lần lặp của bozai này đã quá 100 dòng thì thoát để tạo vòng lặp tiếp thêm vào map 2
+            if (is100) {
+                break;
+            }
+
+        }
+
+        int numLoop2 = 0;
+        // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
+        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
+            numLoop1 += 1;
+            // lấy map chiều dài bozai và số lượng
+            Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
+            // lấy map tên + chiều dài sản phẩm và số lượng
+            Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+
+            // tạo biến chứa chiều dài và số lượng bozai
+            StringBuilder koZaiLength = new StringBuilder();
+            int kouZaiNum = 1;
+            // lặp qua map bozai lấy giá trị số lượng bozai
+            for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
+                koZaiLength.append(e.getValue());
+                kouZaiNum = entry.getValue();
+            }
+
+            // thêm toriai vào map 1 đến số lượng dòng <= 99
+
+            int kouZaiNumMap1 = 0;
+
+            // tạo map của chiều dài bozai và số lượng mới với số lượng chỉ có 1
+            // vì đang lặp qua số lượng bozai nên mỗi lần lặp số lượng đương nhiên là 1
+            // rồi thêm map mới này vào map chứa toriai
+            Map<StringBuilder, Integer> newKouZaiChouPairs = new HashMap<>();
+
+            newKouZaiChouPairs.put(koZaiLength, 1);
+            for (int i = 1; i <= kouZaiNum; i++) {
+                // lấy số vòng đã lặp thành công + 1
+                kouZaiNumMap1 = i + 1;
+
+                // nếu số dòng tính trước trong lần này vượt quá 99 dòng thì thoát
+                if (numRow + meiSyouPairs.size() > 99) {
+                    break;
+                }
+
+                // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map1
+                map1.put(newKouZaiChouPairs, meiSyouPairs);
+
+                // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(numRow += meiSyouPairs.size())
+                // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
+                numRow += meiSyouPairs.size();
+            }
+
+            // nếu chưa lặp hết mà đã quá 99 dòng thì thêm phần còn lại vào map 2
+            if (kouZaiNumMap1 < kouZaiNum) {
+                for (int i = kouZaiNumMap1; i < kouZaiNum; i++) {
+                    // thêm map mới với số lượng bozai = 1 vào map chứa toriai là map2
+                    map2.put(newKouZaiChouPairs, meiSyouPairs);
+                }
             }
 
         }
@@ -373,7 +458,6 @@ public class ReadPDFToExcel {
     private static int checkRowNum(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
         rowToriAiNum = 0;
 
-        int numBozai = 0;
         // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
 
