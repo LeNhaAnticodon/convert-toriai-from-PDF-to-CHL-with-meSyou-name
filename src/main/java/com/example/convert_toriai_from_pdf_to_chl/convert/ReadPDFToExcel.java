@@ -248,7 +248,6 @@ public class ReadPDFToExcel {
      *  còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
      */
     private static Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> getToriaiData(String[] kakuKakou) throws TimeoutException {
-        rowToriAiNum = 0;
 
         // tạo map
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = new LinkedHashMap<>();
@@ -329,6 +328,24 @@ public class ReadPDFToExcel {
             meiSyouPairs.forEach((key, value) -> System.out.println(key[0].toString() + " " + key[1].toString() + " : " + value));
         });
 
+        // list các file của vật liệu hiện tại
+        List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> fileList = new ArrayList<>();
+        if (checkRowNum(kaKouPairs) > 99) {
+            divFile(kaKouPairs);
+        }
+
+        System.out.println(rowToriAiNum);
+        System.out.println("\n" + kirirosu);
+
+        // trả về map kết quả để ghi vào file chl sysc2
+        return kaKouPairs;
+    }
+
+    private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) {
+        int numRow = 0;
+        Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map1 = new LinkedHashMap<>();
+        Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map2 = new LinkedHashMap<>();
+
         // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
         for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
 
@@ -336,6 +353,44 @@ public class ReadPDFToExcel {
             Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
             // lấy map tên + chiều dài sản phẩm và số lượng
             Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+
+            // tạo biến chứa số lượng bozai
+            int kouZaiNum = 1;
+            // lặp qua map bozai lấy giá trị số lượng bozai
+            for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
+                kouZaiNum = entry.getValue();
+            }
+
+            for (int i = 0; i < kouZaiNum; i++) {
+                // lấy kết quả số dòng sản phẩm đã lấy được bằng cách lấy số dòng của các lần lặp trước + số dòng của lần này(kouZaiNum * meiSyouPairs.size())
+                // meiSyouPairs.size chính là số sản phẩm của bozai đang lặp
+                numRow += meiSyouPairs.size();
+            }
+
+        }
+    }
+
+    private static int checkRowNum(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
+        rowToriAiNum = 0;
+
+        int numBozai = 0;
+        // lặp qua các phần tử của map kaKouPairs để tính số dòng sản phẩm đã lấy được
+        for (Map.Entry<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> e : kaKouPairs.entrySet()) {
+
+            // lấy map chiều dài bozai và số lượng
+            Map<StringBuilder, Integer> kouZaiChouPairs = e.getKey();
+            // lấy map tên + chiều dài sản phẩm và số lượng
+            Map<StringBuilder[], Integer> meiSyouPairs = e.getValue();
+
+            // nếu số sản phẩm trong 1 bozai  lớn hơn 99 thì không
+            // thể chia sang file khác được và phải báo lỗi
+            if (meiSyouPairs.size() > 99) {
+                System.out.println("vượt quá 99 hàng");
+                // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2 để in ra thông báo
+                fileName = fileChlName + " " + kouSyu + ".sysc2";
+                throw new TimeoutException();
+            }
+
             // tạo biến chứa số lượng bozai
             int kouZaiNum = 1;
             // lặp qua map bozai lấy giá trị số lượng bozai
@@ -348,20 +403,7 @@ public class ReadPDFToExcel {
             rowToriAiNum += kouZaiNum * meiSyouPairs.size();
         }
 
-        // nếu số dòng lớn hơn 99 th cho bằng 99 rồi ném ngoại lệ timeout để cho chương trình biết rồi hiển thị thông báo
-        if (rowToriAiNum > 99) {
-            rowToriAiNum = 99;
-            System.out.println("vượt quá 99 hàng");
-            // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2 để in ra thông báo
-            fileName = fileChlName + " " + kouSyu + ".sysc2";
-            throw new TimeoutException();
-        }
-
-        System.out.println(rowToriAiNum);
-        System.out.println("\n" + kirirosu);
-
-        // trả về map kết quả để ghi vào file chl sysc2
-        return kaKouPairs;
+        return rowToriAiNum;
     }
 
     private static void writeDataToExcel(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
