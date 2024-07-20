@@ -118,6 +118,7 @@ public class ReadPDFToExcel {
             }*/
         }
 
+        // tạo số thứ tự khi ghi tên là thời gian ở ô tên trong file chl để tránh trùng thời gian
         int j = 0;
         // lặp qua từng loại vật liệu trong list và ghi chúng vào các file chl
         for (int i = 1; i < kakuKouSyuList.size(); i++) {
@@ -136,9 +137,12 @@ public class ReadPDFToExcel {
 //            writeDataToExcel(kaKouPairs, i - 1, csvFileNames);
 //            writeDataToCSV(kaKouPairs, i - 1, csvFileNames);
             // ghi thông tin của vật liệu này vào các file định dạng sysc2 là file của chl
-            for (Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs: fileList) {
+            int fileListSize = fileList.size();
+            for (int k = 0; k < fileListSize; k++) {
+                Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = fileList.get(k);
                 j++;
-                writeDataToChl(kaKouPairs, j, csvFileNames);
+                // thêm trong trường hợp số file của vật liệu này lớn hơn 1 thì thêm k vào là hậu tố của file ở hàm writeDataToChl
+                writeDataToChl(kaKouPairs, j, csvFileNames, fileListSize, k + 1);
             }
         }
 
@@ -257,6 +261,8 @@ public class ReadPDFToExcel {
      * còn value của kaKouPairs cũng là map chứa các cặp key là mảng 2 phần tử gồm tên và chiều dài sản phẩm, value là số lượng sản phẩm
      */
     private static List<Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>>> getToriaiData(String[] kakuKakou) throws TimeoutException {
+        // reset lại danh sách list file
+        fileList.clear();
 
         // tạo map
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs = new LinkedHashMap<>();
@@ -349,6 +355,13 @@ public class ReadPDFToExcel {
         return fileList;
     }
 
+    /**
+     * chia file theo số dòng sản phẩm
+     * nếu vượt quá 99 dòng sẽ chia thành 2 file, file 1 là dưới 99 dòng rồi thêm nó vào list file, file 2 là phần còn lại
+     * tiếp tục gọi lại hàm(đệ quy) và truyền file 2 vào và thực hiện tương tự đến khi không cần chia thành file 2 nữa tức
+     * file 2 có size = 0 thì dừng
+     * @param kaKouPairs map chứa tính vật liệu đại diện cho file đang gọi
+     */
     private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
 
         Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> map1 = new LinkedHashMap<>();
@@ -378,7 +391,7 @@ public class ReadPDFToExcel {
             int kouZaiNum = 1;
             // lặp qua map bozai lấy giá trị số lượng bozai
             for (Map.Entry<StringBuilder, Integer> entry : kouZaiChouPairs.entrySet()) {
-                koZaiLength.append(e.getValue());
+                koZaiLength = entry.getKey();
                 kouZaiNum = entry.getValue();
             }
 
@@ -815,11 +828,14 @@ public class ReadPDFToExcel {
 
     /**
      * ghi tính vật liệu của vật liệu đang xét trong map vào file mới
-     * @param kaKouPairs map chứa tính vật liệu
-     * @param timePlus thời gian hoặc chỉ số cộng thêm vào ô time để tránh bị trùng tên  time giữa các file
+     *
+     * @param kaKouPairs   map chứa tính vật liệu
+     * @param timePlus     thời gian hoặc chỉ số cộng thêm vào ô time để tránh bị trùng tên  time giữa các file
      * @param csvFileNames list chứa danh sách các file đã tạo
+     * @param fileListSize
+     * @param k
      */
-    private static void writeDataToChl(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException {
+    private static void writeDataToChl(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs, int timePlus, ObservableList<CsvFile> csvFileNames, int fileListSize, int k) throws FileNotFoundException {
 
         // Ghi thời gian hiện tại vào dòng đầu tiên
         Date currentDate = new Date();
@@ -844,8 +860,13 @@ public class ReadPDFToExcel {
         String currentTimeMiliS = String.valueOf((Integer.parseInt(sdfMiliS.format(currentDate)) / 100));
         currentTime = currentTime + currentTimeMiliS;
 
+        fileName = fileChlName + " " + kouSyu;
+        // nếu danh sách file của vật liệu này nhiều hơn 1 thì thêm hậu tố chỉ số thứ tự của file
+        if (fileListSize > 1) {
+            fileName = fileName + "(" + k + ")";
+        }
         // lấy tên file chl trong tiêu đề gắn thêm tên vật liệu + .sysc2
-        fileName = fileChlName + " " + kouSyu + ".sysc2";
+        fileName = fileName + ".sysc2";
 
 //        // tạo tên file có gắn thêm thời gian để không trùng với file trước đó
 //        String fileNameAndTime = linkarr[linkarr.length - 1].split("\\.")[0] + "(" + sdfSecond.format(currentDate) + ")--" + kouSyu + ".csv";
