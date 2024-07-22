@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="đang chia file trong một vật liệu">
+    <list default="true" id="d1b1403b-b6e3-4111-8e2a-abaec6ff8cc2" name="Changes" comment="hoàn thành">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/ConVertPdfToExcelCHLController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/convert/ReadPDFToExcel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/dao/SetupData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/convert_toriai_from_pdf_to_chl/dao/SetupData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/languagesMap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/languagesMap.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +172,9 @@
       <workItem from="1721445324018" duration="6630000" />
       <workItem from="1721455442482" duration="5764000" />
       <workItem from="1721466693451" duration="7326000" />
-      <workItem from="1721476825458" duration="4176000" />
+      <workItem from="1721476825458" duration="4392000" />
+      <workItem from="1721617138978" duration="87000" />
+      <workItem from="1721617716972" duration="2353000" />
     </task>
     <task id="LOCAL-00001" summary="them tong chieu dai">
       <created>1718771054905</created>
@@ -298,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721473418363</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="hoàn thành">
+      <created>1721485891819</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1721485891819</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,7 +348,8 @@
     <MESSAGE value="them dinh dang time co milisecon" />
     <MESSAGE value="hoan tat" />
     <MESSAGE value="đang chia file trong một vật liệu" />
-    <option name="LAST_COMMIT_MESSAGE" value="đang chia file trong một vật liệu" />
+    <MESSAGE value="hoàn thành" />
+    <option name="LAST_COMMIT_MESSAGE" value="hoàn thành" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

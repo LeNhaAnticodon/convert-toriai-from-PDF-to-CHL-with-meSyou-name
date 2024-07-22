@@ -71,6 +71,10 @@ public class ReadPDFToExcel {
      * @param csvFileNames list chứa danh sách các file chl đã tạo
      */
     public static void convertPDFToExcel(String filePDFPath, String fileChlDirPath, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException, TimeoutException, IOException {
+/*        csvFileNames.add(new CsvFile("test.", "", 0, 0));
+        fileName = "test.sysc2";
+        throw new TimeoutException();*/
+
         // xóa danh sách cũ trước khi thực hiện, tránh bị ghi chồng lên nhau
         csvFileNames.clear();
 
@@ -110,7 +114,7 @@ public class ReadPDFToExcel {
                 }
             }
 
-            /*if (i > 1) {
+            if (i > 1) {
                 String KouSyuNameBefore = extractValue(kakuKouSyuList.get(i - 1), "法:", "梱包");
 
                 if (KouSyuName.equals(KouSyuNameBefore)) {
@@ -119,7 +123,7 @@ public class ReadPDFToExcel {
                     i--;
                     kakuKouSyuListSize--;
                 }
-            }*/
+            }
         }
 
         // tạo số thứ tự khi ghi tên là thời gian ở ô tên trong file chl để tránh trùng thời gian

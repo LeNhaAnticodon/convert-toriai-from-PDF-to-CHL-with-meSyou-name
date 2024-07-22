@@ -549,7 +549,7 @@ public class ConVertPdfToExcelCHLController implements Initializable {
                 if (e instanceof TimeoutException) {
                     confirmAlert.getButtonTypes().clear();
                     confirmAlert.getButtonTypes().add(ButtonType.OK);
-                    confirmAlert.setHeaderText("File CHL đang tạo: (\"" + ReadPDFToExcel.fileName + "\") có số dòng sản phẩm cần ghi lớn hơn 99 nên không thể ghi");
+                    confirmAlert.setHeaderText("File CHL đang tạo: (\"" + ReadPDFToExcel.fileName + "\") trong một boZai duy nhất có số dòng sản phẩm cần ghi lớn hơn 99 nên không thể ghi");
                     confirmAlert.setContentText("Hãy chỉnh sửa lại dữ liệu vật liệu đang chuyển để tiếp tục!");
                     System.out.println("Vật liệu có số dòng lớn hơn 99");
                     updateLangAlert(confirmAlert);
