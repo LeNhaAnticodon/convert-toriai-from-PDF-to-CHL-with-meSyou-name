@@ -61,14 +61,15 @@ public class ReadPDFToExcel {
     public static String fileName;
 
     // tổng chiều dài các kozai
-    private static  double kouzaiChouGoukei = 0;
+    private static double kouzaiChouGoukei = 0;
     private static double seiHinChouGoukei = 0;
 
     /**
      * chuyển đổi pdf tính vật liệu thành các file chl theo từng vật liệu khác nhau
-     * @param filePDFPath link file pdf
+     *
+     * @param filePDFPath    link file pdf
      * @param fileChlDirPath link thư mục chứa file chl sẽ tạo
-     * @param csvFileNames list chứa danh sách các file chl đã tạo
+     * @param csvFileNames   list chứa danh sách các file chl đã tạo
      */
     public static void convertPDFToExcel(String filePDFPath, String fileChlDirPath, ObservableList<CsvFile> csvFileNames) throws FileNotFoundException, TimeoutException, IOException {
 /*        csvFileNames.add(new CsvFile("test.", "", 0, 0));
@@ -162,6 +163,7 @@ public class ReadPDFToExcel {
 
     /**
      * lấy toàn bộ text của file pdf
+     *
      * @return mảng chứa các trang của file pdf, đầu trang chứa tên vật liệu
      */
     private static String[] getFullToriaiText() throws IOException {
@@ -188,6 +190,7 @@ public class ReadPDFToExcel {
     /**
      * lấy các thông tin của đơn và ghi vào các biến nhớ toàn cục
      * các thông tin nằm trong vùng xác định, dùng hàm extractValue để lấy
+     *
      * @param header text chứa thông tin
      */
     private static void getHeaderData(String header) {
@@ -204,6 +207,7 @@ public class ReadPDFToExcel {
 
     /**
      * lấy thông số đầy đủ của vật liệu, tên vật liệu, mã vật liệu, 3 size của vật liệu và ghi vào biến toàn cục
+     *
      * @param kakuKakou mảng chứa các tính vật liệu của vật liệu đang xét
      */
     private static void getKouSyu(String[] kakuKakou) {
@@ -255,9 +259,17 @@ public class ReadPDFToExcel {
             size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
             size3 = convertStringToIntAndMul(koSyuSizeArr[2], 10);
         } else if (koSyuSizeArr.length == 4) {
-            size1 = convertStringToIntAndMul(koSyuSizeArr[1], 10);
-            size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
-            size3 = convertStringToIntAndMul(koSyuSizeArr[3], 10);
+            //nếu là vật liệu H và [ thì dùng size thứ 3 koSyuSizeArr[2], còn không thì dùng size thứ 4 koSyuSizeArr[3]
+            if (kouSyuName.equals("H") || kouSyuName.equals("[")) {
+                size1 = convertStringToIntAndMul(koSyuSizeArr[1], 10);
+                size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
+                size3 = convertStringToIntAndMul(koSyuSizeArr[2], 10);
+            } else {
+                size1 = convertStringToIntAndMul(koSyuSizeArr[1], 10);
+                size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
+                size3 = convertStringToIntAndMul(koSyuSizeArr[3], 10);
+            }
+
         } else {
             size1 = convertStringToIntAndMul(koSyuSizeArr[1], 10);
             size2 = convertStringToIntAndMul(koSyuSizeArr[0], 10);
@@ -357,7 +369,7 @@ public class ReadPDFToExcel {
 
 
 //        if (checkRowNum(kaKouPairs) > 99) {
-            divFile(kaKouPairs);
+        divFile(kaKouPairs);
 //        }
 
         System.out.println(rowToriAiNum);
@@ -372,6 +384,7 @@ public class ReadPDFToExcel {
      * nếu vượt quá 99 dòng sẽ chia thành 2 file, file 1 là dưới 99 dòng rồi thêm nó vào list file, file 2 là phần còn lại
      * tiếp tục gọi lại hàm(đệ quy) và truyền file 2 vào và thực hiện tương tự đến khi không cần chia thành file 2 nữa tức
      * file 2 có size = 0 thì dừng
+     *
      * @param kaKouPairs map chứa tính vật liệu đại diện cho file đang gọi
      */
     private static void divFile(Map<Map<StringBuilder, Integer>, Map<StringBuilder[], Integer>> kaKouPairs) throws TimeoutException {
@@ -1110,9 +1123,10 @@ public class ReadPDFToExcel {
 
     /**
      * trả về đoạn text nằm giữa startDelimiter và endDelimiter
-     * @param text đoạn văn bản chứa thông tin tìm kiếm
+     *
+     * @param text           đoạn văn bản chứa thông tin tìm kiếm
      * @param startDelimiter đoạn text phía trước vùng cần tìm
-     * @param endDelimiter đoạn text phía sau vùng cần tìm
+     * @param endDelimiter   đoạn text phía sau vùng cần tìm
      * @return đoạn text nằm giữa startDelimiter và endDelimiter
      */
     private static String extractValue(String text, String startDelimiter, String endDelimiter) {
@@ -1129,7 +1143,8 @@ public class ReadPDFToExcel {
 
     /**
      * chuyển đổi text nhập vào sang số double rồi nhân với hệ số và trả về với kiểu int
-     * @param textNum text cần chuyển
+     *
+     * @param textNum    text cần chuyển
      * @param multiplier hệ số
      * @return số int đã nhân với hệ số
      */
