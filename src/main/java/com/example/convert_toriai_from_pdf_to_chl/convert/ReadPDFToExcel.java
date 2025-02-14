@@ -12,6 +12,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -346,6 +348,8 @@ public class ReadPDFToExcel {
 
                     // lấy vùng chứa chiều dài là vùng cuối cùng trong mảng tên
                     String length = meiSyouLengths[meiSyouLengths.length - 1];
+
+//                    System.out.println(Double.parseDouble("581.3") * 100.0);
 
                     // thêm tên và chiều dài vào mảng với chiều dài x 100
                     StringBuilder[] nameAndLength = {new StringBuilder().append(name), new StringBuilder().append(convertStringToIntAndMul(length.trim(), 100))};
@@ -1142,23 +1146,27 @@ public class ReadPDFToExcel {
 
 
     /**
-     * chuyển đổi text nhập vào sang số double rồi nhân với hệ số và trả về với kiểu int
+     * chuyển đổi text nhập vào sang số BigDecimal rồi nhân với hệ số và trả về với kiểu int
      *
      * @param textNum    text cần chuyển
      * @param multiplier hệ số
      * @return số int đã nhân với hệ số
      */
     private static int convertStringToIntAndMul(String textNum, int multiplier) {
-        Double num = null;
+        BigDecimal bigDecimalNum = null;
         try {
-            num = Double.parseDouble(textNum);
+            bigDecimalNum = new BigDecimal(textNum);
+            // nhân số thực num với hệ số truyền vào
+            bigDecimalNum = bigDecimalNum.multiply(new BigDecimal(multiplier));
+
         } catch (NumberFormatException e) {
             System.out.println("Lỗi chuyển đổi chuỗi không phải số thực sang số");
             System.out.println(textNum);
 
         }
-        if (num != null) {
-            return (int) (num * multiplier);
+        if (bigDecimalNum != null) {
+            // Làm tròn đến số nguyên gần nhất
+            return bigDecimalNum.setScale(0, RoundingMode.HALF_UP).intValueExact();
         }
         return 0;
     }
